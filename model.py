@@ -1,7 +1,6 @@
 
 
 from flask_sqlalchemy import SQLAlchemy
-from server import app
 
 db = SQLAlchemy()
 
@@ -119,9 +118,6 @@ if __name__ == '__main__':
     # query it executes.
 
     connect_to_db(app)
-
-    # move to seed database!
-    db.create_all()
 
 
 # test_user = User(email='testemail@email.test', password='12345678', fname='Jane', lname='Doe')

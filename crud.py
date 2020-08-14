@@ -12,13 +12,6 @@ def create_user(email, password, fname, lname):
 
     return user
 
-#HOW CAN I PASS AN INSTANCE AS AN ARGUMENT???
-#The only way I could solve this is by doing so:
-
-#create_folder((User.query.get(2), 'Appetizers'))
-#so I have to look for a user instance first in order to pass it to my func? 
-#is there a more organic way to do this?
-
 def create_folder(user, folder_title):
 
     folder = Folder(user=user, folder_title=folder_title)
@@ -28,10 +21,6 @@ def create_folder(user, folder_title):
 
     return folder
 
-
-#Same thing here
-#create_recipe((User.query.get(2).folders[0]), 
-#'Crepes with berries', 'Flour, milk, eggs, sugar, berries', 'Heat the skillet', 'self', '/static/crepes.png')
 
 def create_recipe(folder, recipe_title, recipe_ingred, recipe_direct, 
                     recipe_src, picture_url):
@@ -64,7 +53,24 @@ def create_recipe_tag(tag, recipe):
     db.session.commit()
 
     return recipe_tag
-    
+
+def get_user_by_email(email):
+
+    return User.query.filter(User.email==email).first()
+
+
+def show_user_folders(user_id):
+
+    current_user = User.query.get(user_id)
+    recipes = {}
+
+    for i in range(len(current_user.folders)):
+        recipes(current_user.folders[i].folder_title) = ""
+        for a in range(len(current_user.folders[i].recipes)):
+            recipes(current_user.folders[i].folder_title) = (current_user.folders[i].recipes[a].recipe_title)
+
+    return recipes
+
 
 if __name__ == '__main__':
     from server import app
