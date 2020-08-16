@@ -65,9 +65,9 @@ def show_user_folders(user_id):
     recipes = {}
 
     for i in range(len(current_user.folders)):
-        recipes(current_user.folders[i].folder_title) = ""
+        recipes[current_user.folders[i].folder_title] = ""
         for a in range(len(current_user.folders[i].recipes)):
-            recipes(current_user.folders[i].folder_title) = (current_user.folders[i].recipes[a].recipe_title)
+            recipes[current_user.folders[i].folder_title] = (current_user.folders[i].recipes[a].recipe_title)
 
     return recipes
 

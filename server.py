@@ -12,6 +12,15 @@ app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 
 
+
+# ----- testing React route ------
+@app.route("/api/home")
+# @app.route("/api/login")
+def root():
+    return render_template("root.html")
+# --------------------------------
+
+
 @app.route('/')
 def homepage():
     """View homepage"""
@@ -72,10 +81,6 @@ def show_user_profile():
     else:
         flash('Wrong password!')
 
-@app.route('/myrecipes')
-def show_recipes():
-
-    pass 
 
 
 if __name__ == '__main__':
