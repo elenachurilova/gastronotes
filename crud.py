@@ -62,14 +62,15 @@ def get_user_by_email(email):
 def show_user_folders(user_id):
 
     current_user = User.query.get(user_id)
-    recipes = {}
+    user_folders = current_user.folders
 
-    for i in range(len(current_user.folders)):
-        recipes[current_user.folders[i].folder_title] = ""
-        for a in range(len(current_user.folders[i].recipes)):
-            recipes[current_user.folders[i].folder_title] = (current_user.folders[i].recipes[a].recipe_title)
+    return user_folders
+    # for i in range(len(current_user.folders)):
+    #     recipes[current_user.folders[i].folder_title] = ""
+    #     for a in range(len(current_user.folders[i].recipes)):
+    #         recipes[current_user.folders[i].folder_title] = (current_user.folders[i].recipes[a].recipe_title)
 
-    return recipes
+    # return recipes
 
 
 if __name__ == '__main__':
