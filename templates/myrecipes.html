@@ -10,21 +10,23 @@
         {% endfor %}
 
 
-        <ul id="recipe_title"></ul>
+        <ul id="recipes"></ul>
 
 
-        <div id="whole_recipe"></div>
+        <div id="whole_recipe">
+            <ul id="ingredients"></ul>
+            <ul id="directions"></ul>
+        </div>
 
 
-        <h1 id="recipetitle"></h1>
-
-        <ul id="recipe_ingred"></ul>
-
-        <ul id="recipe_direct"></ul>
-
-        <p id="recipe_src"></p>
-
-        <p id="recipe_image"></p>
+        <div id="whole_recipe_edit">
+            <form>
+                <input type="text" id="recipe_title">
+                <input type="text" id="recipe_ingred">
+                <input type="text" id="recipe_direct">
+                <button value="Submit"></button>
+            </form>
+        </div>
 
 
     </div>
