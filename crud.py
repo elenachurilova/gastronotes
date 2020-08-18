@@ -65,13 +65,25 @@ def show_user_folders(user_id):
     user_folders = current_user.folders
 
     return user_folders
-    # for i in range(len(current_user.folders)):
-    #     recipes[current_user.folders[i].folder_title] = ""
-    #     for a in range(len(current_user.folders[i].recipes)):
-    #         recipes[current_user.folders[i].folder_title] = (current_user.folders[i].recipes[a].recipe_title)
 
-    # return recipes
+def show_recipe_by_folder(folder_id):
 
+    folder = Folder.query.get(folder_id)
+
+    recipes = folder.recipes
+
+    recipes_list = []
+
+    for recipe in recipes:
+        recipes_list.append({"recipe_id" : recipe.recipe_id,
+                            "folder_id" : recipe.folder_id,
+                            "recipe_title" : recipe.recipe_title,
+                            "recipe_ingred" : recipe.recipe_ingred,
+                            "recipe_direct": recipe.recipe_direct,
+                            "recipe_src" : recipe.recipe_src,
+                            "picture_url" : recipe.picture_url})
+
+    return recipes_list
 
 if __name__ == '__main__':
     from server import app

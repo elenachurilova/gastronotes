@@ -92,83 +92,9 @@ def show_user_folders():
 @app.route("/myfolders/myrecipes/<int:folder_id>")
 def show_folder_recipes(folder_id):
 
-    folder = Folder.query.get(folder_id)
-
-    recipes = folder.recipes
-
-    recipes_list = []
-
-    for recipe in recipes:
-        recipes_list.append({"recipe_id" : recipe.recipe_id,
-                            "folder_id" : recipe.folder_id,
-                            "recipe_title" : recipe.recipe_title,
-                            "recipe_ingred" : recipe.recipe_ingred,
-                            "recipe_direct": recipe.recipe_direct,
-                            "recipe_src" : recipe.recipe_src,
-                            "picture_url" : recipe.picture_url})
+    recipes_list = crud.show_recipe_by_folder(folder_id)
 
     return jsonify(recipes_list)
-
-
-# @app.route("/myrecipes/<int:recipe_id>")
-# def show_user_recipes(recipe_id):
-
-#     recipe = Recipe.query.get(recipe_id)
-
-#     if recipe:
-#         return jsonify({"recipe_id" : recipe.recipe_id,
-#                         "folder_id" : recipe.folder_id,
-#                         "recipe_title" : recipe.recipe_title,
-#                         "recipe_ingred" : recipe.recipe_ingred,
-#                         "recipe_direct": recipe.recipe_direct,
-#                         "recipe_src" : recipe.recipe_src,
-#                         "picture_url" : recipe.picture_url})
-#     else:
-#         return jsonify("recipe_id" : "error",
-#                         "message" : "No recipe found with this ID")
-
-
-
-    # current_user_id = session['userid']
-
-    # folders = crud.show_user_folders(current_user_id)
-    # # folders: 
-    # #[<Folder folder_id=1, title=quick dinners>, <Folder folder_id=2, title=snacks>, 
-    # # <Folder folder_id=3, title=quick dinners>, <Folder folder_id=4, title=entrees>, 
-    # # <Folder folder_id=5, title=breakfast>]
-
-    # dic = {}
-
-    # for folder in folders:
-    # # e.g. <Folder folder_id=1, title=quick dinners>
-
-    #     dic[folder.folder_title] : ""
-    #     # e.g. "quick dinners" 
-
-    #     for recipe in folder.recipes:
-    #     #[<Recipe recipe_id=1, title=Shrimp, Watercress and Farro Salad>, 
-    #     # <Recipe recipe_id=2, title=Mexican Chicken Stew>, 
-    #     # <Recipe recipe_id=3, title=BUTTERY SOFT PRETZELS> 
-
-    #         dic[folder.folder_title] = {recipe.recipe_title : {"recipe_id" : recipe.recipe_id,
-    #                                                             "folder_id" : recipe.folder_id,
-    #                                                             "recipe_ingred" : recipe.recipe_ingred,
-    #                                                             "recipe_direct": recipe.recipe_direct,
-    #                                                             "recipe_src " : recipe.recipe_src,
-    #                                                             "picture_url" : recipe.picture_url}}
-
-    # return jsonify(dic)
-
-# <-------- NEED TO RETURN SOMETHING LIKE THIS: ------------>
-# {   "dinners" : {"chicken curry" : {"ingredients" : "1 onion, 2 peppers"},
-#                   "beef stroganoff" : {"ingredients" : "1 onion, 2 peppers"}}
-#             },
-
-#     "breakfasts" : {"hashbrowns" : {"ingredients" : "1 onion, 2 peppers"},
-#                       "scrambled eggs" : {"ingredients" : "1 onion, 2 peppers"}
-#                 }
-# }
-        
 
 
 if __name__ == '__main__':

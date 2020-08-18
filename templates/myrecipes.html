@@ -4,34 +4,28 @@
 {% block body %}
 
     <div>
+
         {% for folder in folders%}
-            <h3 class="folder_title"><a href="/myfolders"> {{ folder.folder_title }} </a></h3>
+            <h3><a class="folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}" href="/myfolders"> {{ folder.folder_title }} </a></h3>
         {% endfor %}
 
-        <div id="recipe_title"></div>
+
+        <ul id="recipe_title"></ul>
 
 
-        <!-- <section>
-            <div>
-                <h2>Recipe Info:</h2>
-                <dl>
-                    <dt>Title:</dt>
-                    <dd id="recipe_title">Unknown</dd>
-        
-                    <dt>Ingredients:</dt>
-                    <dd id="recipe_ingred">Unknown</dd>
-        
-                    <dt>Directions:</dt>
-                    <dd id="recipe_direct">Unknown</dd>
+        <div id="whole_recipe"></div>
 
-                    <dt>Source:</dt>
-                    <dd id="recipe_src">Unknown</dd>
 
-                    <dt>Picture</dt>
-                    <dd id="picture_url">Unknown</dd>
-                  </dl>
-            </div>
-        </section> -->
+        <h1 id="recipetitle"></h1>
+
+        <ul id="recipe_ingred"></ul>
+
+        <ul id="recipe_direct"></ul>
+
+        <p id="recipe_src"></p>
+
+        <p id="recipe_image"></p>
+
 
     </div>
 
