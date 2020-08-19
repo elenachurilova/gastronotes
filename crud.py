@@ -2,6 +2,7 @@
 
 from model import db, User, Folder, Recipe, Tag, RecipeTag, connect_to_db
 
+
 def create_user(email, password, fname, lname):
     """Create and return a new user."""
 
@@ -13,6 +14,7 @@ def create_user(email, password, fname, lname):
     return user
 
 def create_folder(user, folder_title):
+    """Create and return a new folder"""
 
     folder = Folder(user=user, folder_title=folder_title)
 
@@ -24,6 +26,7 @@ def create_folder(user, folder_title):
 
 def create_recipe(folder, recipe_title, recipe_ingred, recipe_direct, 
                     recipe_src, picture_url):
+    """Create and return a new recipe"""
 
     recipe = Recipe(folder=folder, recipe_title=recipe_title,
                     recipe_ingred=recipe_ingred, recipe_direct=recipe_direct,
@@ -36,6 +39,7 @@ def create_recipe(folder, recipe_title, recipe_ingred, recipe_direct,
 
 
 def create_tag(user, tag_name):
+    """Create and return a new tag"""
 
     tag = Tag(user=user, tag_name=tag_name)
 
@@ -46,6 +50,7 @@ def create_tag(user, tag_name):
 
 
 def create_recipe_tag(tag, recipe):
+    """Create and return a new recipe tag"""
 
     recipe_tag = RecipeTag(tag=tag, recipe=recipe)
 
@@ -55,11 +60,13 @@ def create_recipe_tag(tag, recipe):
     return recipe_tag
 
 def get_user_by_email(email):
+    """Find and return a user by their email"""
 
     return User.query.filter(User.email==email).first()
 
 
 def show_user_folders(user_id):
+    """Find and return user's folder by user id"""
 
     current_user = User.query.get(user_id)
     user_folders = current_user.folders
@@ -67,6 +74,7 @@ def show_user_folders(user_id):
     return user_folders
 
 def show_recipe_by_folder(folder_id):
+    """Find and return a list of recipes in a folder"""
 
     folder = Folder.query.get(folder_id)
 
@@ -84,6 +92,20 @@ def show_recipe_by_folder(folder_id):
                             "picture_url" : recipe.picture_url})
 
     return recipes_list
+
+def update_recipe(recipe_id, recipe_title, recipe_ingred, recipe_direct):
+    """Find a recipe by it's id and update it"""
+
+    recipe = Recipe.query.get(recipe_id)
+
+    recipe.recipe_title = recipe_title
+    recipe.recipe_ingred = recipe_ingred
+    recipe.recipe_direct = recipe_direct
+
+    print(f"This is Crud - recipe id = {recipe_id}, {recipe_title}")
+    
+    db.session.commit()
+
 
 if __name__ == '__main__':
     from server import app

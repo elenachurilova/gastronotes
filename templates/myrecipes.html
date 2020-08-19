@@ -20,11 +20,13 @@
 
 
         <div id="whole_recipe_edit">
-            <form>
-                <input type="text" id="recipe_title">
-                <input type="text" id="recipe_ingred">
-                <input type="text" id="recipe_direct">
-                <button value="Submit"></button>
+            <form id="recipe_form">
+                <input id="recipe_id_field" type="hidden">
+                <input type="text" id="recipe_title" name="recipe_title"  placeholder="Recipe Title">
+                <textarea  id="recipe_ingred" name="recipe_ingred"
+                rows="5" cols="33" placeholder="List Of Ingredients"></textarea>
+                <textarea id="recipe_direct" name="recipe_direct" rows="5" cols="33" placeholder="Directions"></textarea>
+                <button id="submit" value="Submit">Submit</button>
             </form>
         </div>
 

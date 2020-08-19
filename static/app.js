@@ -5,7 +5,7 @@ function show_recipe(recipe) {
 
     //add li to recipes list
     
-    let li = $(`<li class="recipe_title" id=${recipe.recipe_id}><span class="show">${recipe.recipe_title}</span><span class="edit">(edit)</span></li>`)
+    let li = $(`<li class="recipe_title" id=${recipe.recipe_id}><span class="show">${recipe.recipe_title}</span><span class="edit"><button> Edit </button></span></li>`)
 
     $("#recipes").append(li)
 
@@ -18,11 +18,12 @@ function show_recipe(recipe) {
         $("#whole_recipe").empty()
 
         $("#whole_recipe").append(`<h1 id="recipetitle">${recipe.recipe_title}</h1>
+                                    <img id="recipeimage" src=${recipe.picture_url}></img>
                                     <ul id="recipeingred">${recipe.recipe_ingred}</ul>
                                     <ul id="recipedirect">${recipe.recipe_direct}</ul>
-                                    <a href=${recipe.recipe_src} id="recipesrc">${recipe.recipe_src}</a>
-                                    <p id="recipeimage">${recipe.picture_url}</p>`);
+                                    <a href=${recipe.recipe_src} id="recipesrc">${recipe.recipe_src}</a>`);
     });
+
 
     li.find(".edit").on("click", (evt) => {
 
@@ -31,6 +32,7 @@ function show_recipe(recipe) {
         $("#recipe_title").val(recipe.recipe_title)
         $("#recipe_ingred").val(recipe.recipe_ingred)
         $("#recipe_direct").val(recipe.recipe_direct)
+        $("#recipe_id_field").val(recipe.recipe_id)
 
     });
 }
@@ -55,8 +57,32 @@ $(".folder_title").on("click", (evt) => {
     
 });
 
-// < ------ ISSUES ------- >
+// upon clicking on Submit button, send ajax POST request to the server /myfolders/edit route
+$("#submit").on("click", (evt) => {
+    evt.preventDefault();
 
-// 4 - need an advice on how to start editing recipes
+    const formInputs = {
+        'recipe_title' : $("#recipe_title").val(),
+        'recipe_ingred' : $("#recipe_ingred").val(),
+        'recipe_direct' : $("#recipe_direct").val(),
+        'recipe_id' : $("#recipe_id_field").val()
+    }
 
+    $.post('/myfolders/edit', formInputs, (res) => {
+        console.log(res)
+    })
+
+    // $.ajax({
+    //     url: "/myfolders/edit",
+    //     data: $("#recipe_form").serialize(),
+    //     type: "POST",
+    //     success: function(response) {
+    //         console.log(response.success);
+    //     },
+    //     error: function(error) {
+    //         console.log(error);
+    //     }
+    // })
+    
+})
 
