@@ -1,22 +1,24 @@
 "use strict";
 
+//create a form to edit an existing recipe
 function create_form() {
 
     $("#whole_recipe_edit").append(
         `<form id="recipe_form">
             <input id="recipe_id_field" type="hidden">
-            <input type="text" id="recipe_title" name="recipe_title"    placeholder="Recipe Title">
+            <input type="text" id="recipe_title" name="recipe_title" placeholder="Recipe Title">
             <textarea  id="recipe_ingred" name="recipe_ingred"
             rows="5" cols="33" placeholder="List Of Ingredients"></textarea>
             <textarea id="recipe_direct" name="recipe_direct" rows="5" cols="33" placeholder="Directions"></textarea>
-            <button id="submit" value="Submit">Submit</button>
+            <button id="edition_submit" value="Submit">Submit</button>
         </form>`
     );
 
-    $("#submit").on("click", submit_form)
+    $("#edition_submit").on("click", submit_form)
 
 }
 
+//submit edits to an exisitng recipe
 function submit_form(evt) {
 
     evt.preventDefault();
@@ -34,7 +36,7 @@ function submit_form(evt) {
     
 }
 
-
+//show a recipe in a given folder
 function show_recipe(recipe) {
 
     //add li to recipes list
@@ -76,7 +78,40 @@ function show_recipe(recipe) {
     });
 }
 
-//clicking on folder title...
+//submit new folder to db
+function submit_new_folder(evt) {
+
+    evt.preventDefault();
+
+    const formInputs = {
+        'folder_title' : $("#new_folder_title").val(),
+    }
+
+    $.post('/myfolders/add_folder', formInputs, (res) => {
+        alert("New folder was added!")
+    })
+    
+}
+
+//submit new recipe to db
+function submit_new_recipe(evt) {
+    evt.preventDefault();
+
+    const formInputs = {
+        'recipe_title' : $("#recipe_ttl").val(),
+        'recipe_ingred' : $("#recipe_ing").val(),
+        'recipe_direct' : $("#recipe_dir").val(),
+        'recipe_src' : $("#recipe_src").val(),
+        'picture_url' : $("#picture_url").val(),
+        'folderid' : $(".folder_options").attr("id")
+    }
+
+    $.post('/myfolders/add_recipe', formInputs, (res) => {
+        alert("New recipe was added!")
+    })
+}
+
+// event: clicking on folder title...
 $(".folder_title").on("click", (evt) => {
 
     evt.preventDefault(); 
@@ -99,8 +134,43 @@ $(".folder_title").on("click", (evt) => {
     
 });
 
+// event clicking on NEW FOLDER button...
+$("#new_folder_button").on("click", (evt) => {
+    evt.preventDefault();
+
+    $("#new_folder_field").empty()
+
+    if ($("#new_folder_field")[0].hidden === false) {
+        $("#new_folder_field").attr("hidden", true)
+    } else {
+        $("#new_folder_field").attr("hidden", false)
+    }
+
+    $("#new_folder_field").append(
+        `<input id="new_folder_title" type="text" placeholder="Folder Title" required></input>
+        <button id="folder_addition_submit" value="Submit">Submit</button>`
+    );
+    
+    $("#folder_addition_submit").on("click", submit_new_folder)
+
+});
+
+// event: clicking on NEW RECIPE button...
+$("#new_recipe_button").on("click", (evt) => {
+    evt.preventDefault();
+
+    if ($("#new_recipe_field")[0].hidden === false) {
+        $("#new_recipe_field").attr("hidden", true)
+    } else {
+        $("#new_recipe_field").attr("hidden", false)
+    }
+
+});
+
+// event: submitting new recipe...
+$("#recipe_addition_submit").on("click", submit_new_recipe)
 
 
 
 
-
+ 

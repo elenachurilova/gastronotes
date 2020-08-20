@@ -2,7 +2,7 @@
 
 from flask import (Flask, jsonify, render_template, request, flash, session,
                    redirect)
-from model import connect_to_db, Folder
+from model import connect_to_db, Folder, User, Recipe, Tag, RecipeTag
 import crud
 from jinja2 import StrictUndefined
 
@@ -71,6 +71,14 @@ def login():
         else:
             flash('Wrong password!')
 
+@app.route('/logout', methods = ["GET"])
+def logout():
+    """Log user out"""
+
+    session.pop("userid", None)
+
+    return render_template("homepage.html")
+    
 
 @app.route('/myfolders')
 def show_user_folders():
@@ -82,6 +90,7 @@ def show_user_folders():
         folders = crud.show_user_folders(current_user_id)
 
         return render_template('myrecipes.html', folders=folders)
+
 
 
 @app.route('/myfolders/myrecipes/<int:folder_id>')
@@ -104,37 +113,39 @@ def update_recipe():
 
     crud.update_recipe(recipe_id, recipe_title, recipe_ingred, recipe_direct)
 
-    print(f"This is Server - recipe id = {recipe_id}, {recipe_title}")
-
     return jsonify({"success" : "Your recipe was updated!"})
 
 
+@app.route('/myfolders/add_folder', methods=["POST"])
+def add_new_folder():
+    """Adding new folder from UI"""
 
-# ----- testing React route ------
-@app.route("/api/home")
-# @app.route("/api/login")
-def root():
-    return render_template("root.html")
-# --------------------------------
+    folder_title = request.form['folder_title']
+    user_id = session['userid']
+    user = User.query.get(user_id)
 
-# ----- keeping this for now, need to fix bugs in funct on line 50 ------ 
-# @app.route('/login', methods=["POST"])
-# def show_user_profile():
-#     """Log user in"""
+    crud.create_folder(user, folder_title)
 
-#     email = request.form.get("email")
-#     password = request.form.get("password")
+    return jsonify({"success" : "New folder was added!"})
 
-#     user_info = crud.get_user_by_email(email)
+@app.route('/myfolders/add_recipe', methods=["POST"])
+def add_new_recipe():
+    """Adding a new recipe into a folder"""
 
-#     if password == user_info.password:
-#         #adding user_id to the Flask session
-#         session['userid'] = user_info.user_id
-#         flash(f'Logged in as {user_info.email}!')
-#         return redirect('/myfolders')
-#     else:
-#         flash('Wrong password!')
+    recipe_title = request.form['recipe_title']
+    recipe_ingred = request.form['recipe_ingred']
+    recipe_direct = request.form['recipe_direct']
+    recipe_src = request.form['recipe_src']
+    picture_url = request.form['picture_url']
+    folder_id = request.form['folderid']
+    current_folder = Folder.query.get(folder_id)
 
+    crud.create_recipe(current_folder, recipe_title, recipe_ingred, recipe_direct, 
+                    recipe_src, picture_url)
+
+    folders = crud.show_user_folders(session['userid'])
+
+    return render_template('myrecipes.html', folders=folders)
 
 if __name__ == '__main__':
     connect_to_db(app)
