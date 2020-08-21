@@ -12,9 +12,9 @@
         <div id="new_recipe_field" hidden=True>
             <form>
                 <h4>Select a folder for your new recipe:</h4>
-                <select>
+                <select id="folder_options">
                     {% for folder in folders %}
-                        <option class="folder_options" id="{{folder.folder_id}}">{{ folder.folder_title }}</option>
+                        <option value="{{folder.folder_id}}">{{ folder.folder_title }}</option>
                     {% endfor %}
                 </select>
                     <input id="recipe_ttl" placeholder="Recipe Title"></input>
@@ -27,7 +27,10 @@
         </div>
 
         {% for folder in folders%}
-            <h3><a class="folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}" href="/myfolders"> {{ folder.folder_title }} </a></h3>
+            <div>
+                <h3><a class="folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}" href="/myfolders"> {{ folder.folder_title }} </a></h3>
+                <button class="delete_folder" value="{{folder.folder_id}}"> Delete </button>
+            </div>
         {% endfor %}
 
         <ul id="recipes"></ul>
@@ -39,6 +42,8 @@
 
         <div id="whole_recipe_edit"></div>
         <div id="new_recipe_add"></div>
+
+        <h4 id="msg"></h4>
 
     
         <button id="logout" name="logout" type="button"><a href="/logout">Log Out</a></button>

@@ -106,6 +106,20 @@ def update_recipe(recipe_id, recipe_title, recipe_ingred, recipe_direct):
     
     db.session.commit()
 
+def delete_folder_and_contents(folder_id):
+    """DELETE A GIVEN FOLDER AND IT'S CONTENTS"""
+
+    folder = Folder.query.get(folder_id)
+    recipes = folder.recipes
+    for recipe in recipes:
+        db.session.delete(recipe)
+    
+    db.session.delete(folder)
+
+    db.session.commit()
+
+    print(f"This is CRUD - FOLDER WITH ID {folder_id} WAS DELETED")
+
 
 if __name__ == '__main__':
     from server import app

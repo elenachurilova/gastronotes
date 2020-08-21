@@ -1,7 +1,6 @@
 """Server for Gastronotes app."""
 
-from flask import (Flask, jsonify, render_template, request, flash, session,
-                   redirect)
+from flask import (Flask, jsonify, render_template, request, flash, session, redirect, url_for)
 from model import connect_to_db, Folder, User, Recipe, Tag, RecipeTag
 import crud
 from jinja2 import StrictUndefined
@@ -62,14 +61,19 @@ def login():
 
         user_info = crud.get_user_by_email(email)
 
-        if password == user_info.password:
-            #adding user_id to the Flask session
-            session['userid'] = user_info.user_id
-            flash(f'Logged in as {user_info.email}!')
-            return redirect('/myfolders')
-
+        if user_info == None:
+            flash("Username not found")
+            return redirect(request.url)
         else:
-            flash('Wrong password!')
+            if password != user_info.password:
+                flash("Incorrect password")
+                return redirect(request.url)
+            else:
+                session['userid'] = user_info.user_id
+                flash(f'Logged in as {user_info.email}!')
+                print("SESSION USERNAME SET")
+                return redirect('/myfolders')
+    
 
 @app.route('/logout', methods = ["GET"])
 def logout():
@@ -128,6 +132,20 @@ def add_new_folder():
 
     return jsonify({"success" : "New folder was added!"})
 
+
+@app.route('/myfolders/delete_folder', methods=["POST"])
+def delete_folder():
+    """Deleting a folder and its contents"""
+
+    folder_id = request.form['folder_id']
+
+    crud.delete_folder_and_contents(folder_id)
+ 
+    print(f"This is SERVER - FOLDER WITH ID {folder_id} WAS DELETED")
+
+    return jsonify({"success" : "Folder was deleted"})
+
+
 @app.route('/myfolders/add_recipe', methods=["POST"])
 def add_new_recipe():
     """Adding a new recipe into a folder"""
@@ -146,6 +164,7 @@ def add_new_recipe():
     folders = crud.show_user_folders(session['userid'])
 
     return render_template('myrecipes.html', folders=folders)
+
 
 if __name__ == '__main__':
     connect_to_db(app)

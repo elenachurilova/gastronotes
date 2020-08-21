@@ -103,7 +103,7 @@ function submit_new_recipe(evt) {
         'recipe_direct' : $("#recipe_dir").val(),
         'recipe_src' : $("#recipe_src").val(),
         'picture_url' : $("#picture_url").val(),
-        'folderid' : $(".folder_options").attr("id")
+        'folderid' : $("#folder_options").val()
     }
 
     $.post('/myfolders/add_recipe', formInputs, (res) => {
@@ -170,7 +170,38 @@ $("#new_recipe_button").on("click", (evt) => {
 // event: submitting new recipe...
 $("#recipe_addition_submit").on("click", submit_new_recipe)
 
+// event: clicking on delete a folder button
+$(".delete_folder").on("click", (evt) => {
+    evt.preventDefault();
 
+    const folder_id_value = evt.target.value
 
+    let userPreference;
+
+		if (confirm("Deleting a folder will delete its contents. \nAre you sure you want to continue?") == true) {
+
+            console.log("User said ok -- sending dictionary to the server")
+
+            const formInputs = {
+                "folder_id" : folder_id_value
+            }
+            
+            console.log(formInputs)
+
+            $.post('/myfolders/delete_folder', formInputs, (res) => {
+                console.log("Hello3")
+            })
+
+            console.log("Received ok from the server")
+
+            userPreference = "Folder was deleted";
+
+		} else {
+			userPreference = "Folder was't deleted";
+		}
+
+	$("#msg").html(userPreference); 
+
+})
 
  
