@@ -93,14 +93,17 @@ def show_recipe_by_folder(folder_id):
 
     return recipes_list
 
-def update_recipe(recipe_id, recipe_title, recipe_ingred, recipe_direct):
+def update_recipe(recipe_id, folder_id, recipe_title, recipe_ingred, recipe_direct, recipe_src, picture_url):
     """Find a recipe by it's id and update it"""
 
     recipe = Recipe.query.get(recipe_id)
 
+    recipe.folder_id = folder_id
     recipe.recipe_title = recipe_title
     recipe.recipe_ingred = recipe_ingred
     recipe.recipe_direct = recipe_direct
+    recipe.recipe_src = recipe_src
+    recipe.picture_url = picture_url
 
     print(f"This is Crud - recipe id = {recipe_id}, {recipe_title}")
     

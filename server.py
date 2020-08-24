@@ -20,6 +20,7 @@ def homepage():
         return render_template("homepage.html")
 
 
+
 @app.route('/signup', methods=["GET","POST"])
 def signup():
     """View sign up form and register user"""
@@ -45,6 +46,8 @@ def signup():
             flash("Account created! Yay!")
 
         return redirect('/')
+
+
 
 @app.route('/login', methods = ["GET", "POST"])
 def login():
@@ -75,6 +78,7 @@ def login():
                 return redirect('/myfolders')
     
 
+
 @app.route('/logout', methods = ["GET"])
 def logout():
     """Log user out"""
@@ -83,6 +87,7 @@ def logout():
 
     return render_template("homepage.html")
     
+
 
 @app.route('/myfolders')
 def show_user_folders():
@@ -106,18 +111,23 @@ def show_folder_recipes(folder_id):
     return jsonify(recipes_list)
 
 
+
 @app.route('/myfolders/edit', methods=["POST"])
 def update_recipe():
     """Updating existing recipe"""
 
+    recipe_id = request.form['recipe_id']
+    folder_id = request.form['folder_id']
     recipe_title = request.form['recipe_title']
     recipe_ingred = request.form['recipe_ingred']
     recipe_direct = request.form['recipe_direct']
-    recipe_id = request.form['recipe_id']
-
-    crud.update_recipe(recipe_id, recipe_title, recipe_ingred, recipe_direct)
+    recipe_src = request.form['recipe_src']
+    image_url = request.form['image_url']
+    
+    crud.update_recipe(recipe_id, folder_id, recipe_title, recipe_ingred, recipe_direct, recipe_src, image_url)
 
     return jsonify({"success" : "Your recipe was updated!"})
+
 
 
 @app.route('/myfolders/add_folder', methods=["POST"])
@@ -128,9 +138,12 @@ def add_new_folder():
     user_id = session['userid']
     user = User.query.get(user_id)
 
-    crud.create_folder(user, folder_title)
+    new_folder = crud.create_folder(user, folder_title)
 
-    return jsonify({"success" : "New folder was added!"})
+    json_info = {"folder_title" : new_folder.folder_title, "folder_id" : new_folder.folder_id}
+
+    return jsonify(json_info)
+
 
 
 @app.route('/myfolders/delete_folder', methods=["POST"])
@@ -144,6 +157,7 @@ def delete_folder():
     print(f"This is SERVER - FOLDER WITH ID {folder_id} WAS DELETED")
 
     return jsonify({"success" : "Folder was deleted"})
+
 
 
 @app.route('/myfolders/add_recipe', methods=["POST"])
@@ -164,6 +178,26 @@ def add_new_recipe():
     folders = crud.show_user_folders(session['userid'])
 
     return render_template('myrecipes.html', folders=folders)
+
+
+
+@app.route('/api/myfolders.json')
+def return_json_user_folders(): 
+
+    if "userid" in session:
+
+        current_user_id = session['userid']
+        folders = crud.show_user_folders(current_user_id)
+
+        folders_list = []
+
+        for folder in folders:
+            folders_list.append({"folder_id" : folder.folder_id,
+                                "folder_title" : folder.folder_title})
+
+    return jsonify(folders_list)
+
+
 
 
 if __name__ == '__main__':

@@ -7,44 +7,49 @@
 
         <div><button id="new_folder_button">NEW FOLDER</button></div>
         <div id="new_folder_field" hidden=True></div>
-        <div><button id="new_recipe_button">NEW RECIPE</button></div>
 
-        <div id="new_recipe_field" hidden=True>
-            <form>
-                <h4>Select a folder for your new recipe:</h4>
+        <div><button id="new_recipe_button">NEW RECIPE</button></div>
+        <!-- form to create new recipe -->
+        <div id="new_recipe_field" style="display: none">
+            <form id="new_recipe_form">
                 <select id="folder_options">
                     {% for folder in folders %}
                         <option value="{{folder.folder_id}}">{{ folder.folder_title }}</option>
                     {% endfor %}
                 </select>
-                    <input id="recipe_ttl" placeholder="Recipe Title"></input>
-                    <textarea id="recipe_ing" placeholder="Ingredients"></textarea>
-                    <textarea id="recipe_dir" placeholder="Directions"></textarea>
-                    <input id="recipe_src" placeholder="Source - self or URL"></input>
-                    <input id="picture_url" placeholder="Picture URL"></input>
+                    <input id="recipe_ttl" placeholder="Recipe Title" required></input>
+                    <textarea id="recipe_ing" placeholder="Ingredients" required></textarea>
+                    <textarea id="recipe_dir" placeholder="Directions" required></textarea>
+                    <input id="recipe_source" placeholder="Source - self or URL"  required></input>
+                    <input id="picture_url" placeholder="Picture URL" required></input>
                     <button id="recipe_addition_submit" value="Submit">Submit</button>
             </form>
         </div>
 
+        <!-- folder titles / category selectors -->
+        <div id="folder_directory">
         {% for folder in folders%}
             <div>
-                <h3><a class="folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}" href="/myfolders"> {{ folder.folder_title }} </a></h3>
+                <h1><a class="folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}" href="/myfolders"> {{ folder.folder_title }} </a></h1>
                 <button class="delete_folder" value="{{folder.folder_id}}"> Delete </button>
             </div>
         {% endfor %}
+        </div>
 
+        <!-- list of recipes -->
         <ul id="recipes"></ul>
 
+        <!-- recipe body -->
         <div id="whole_recipe">
             <ul id="ingredients"></ul>
             <ul id="directions"></ul>
         </div>
 
+
         <div id="whole_recipe_edit"></div>
         <div id="new_recipe_add"></div>
 
         <h4 id="msg"></h4>
-
     
         <button id="logout" name="logout" type="button"><a href="/logout">Log Out</a></button>
 
