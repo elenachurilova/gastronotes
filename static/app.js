@@ -94,7 +94,7 @@ function show_recipe(recipe) {
         $("#recipe_ingred").val(recipe.recipe_ingred)
         $("#recipe_direct").val(recipe.recipe_direct)
         $("#recipe_src").val(recipe.recipe_src)
-        $("image_url").val(recipe.picture_url)
+        $("#image_url").val(recipe.picture_url)
         
 
     });
