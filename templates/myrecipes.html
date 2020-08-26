@@ -29,7 +29,7 @@
 
         <!-- a form to paste a URL for web scraping -->
         <div><button id="recipe_from_url_button">RECIPE FROM URL</button></div>
-        <div>
+        <div id="scraped_recipe_field" style="display: none">
             <form>
                 <select id="folder_options_2">
                     {% for folder in folders %}
@@ -37,6 +37,7 @@
                     {% endfor %}
                 </select>
                 <input id="url_link" placeholder="URL"></input>
+                <button id="recipe_scraping_submit" value="Submit">Submit</button>
             </form>
         </div>
 

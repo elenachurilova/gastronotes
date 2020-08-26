@@ -67,7 +67,7 @@ function show_recipe(recipe) {
         $("#whole_recipe").empty()
 
         $("#whole_recipe").append(`<h1 id="recipetitle">${recipe.recipe_title}</h1>
-                                    <img id="recipeimage" width="400" height="300" src=${recipe.picture_url}></img>
+                                    <img id="recipeimage" width="400" height="300" src="${recipe.picture_url}"></img>
                                     <ul id="recipeingred">${recipe.recipe_ingred}</ul>
                                     <ul id="recipedirect">${recipe.recipe_direct}</ul>
                                     <a href=${recipe.recipe_src} id="recipesrc">${recipe.recipe_src}</a>`);
@@ -171,7 +171,7 @@ function submit_new_recipe(evt) {
         'folderid' : $("#folder_options").val()
     }
 
-    $.post('myfolders/add_recipe', formInputs, (res) => {
+    $.post('/myfolders/add_recipe', formInputs, (res) => {
         show_new_recipe(folder_idd)
         $("#msg").html("New recipe was added!").fadeIn("slow")
         message_fade_out() 
@@ -220,8 +220,6 @@ function delete_folder(evt) {
 
 }
 
-
-// KAT duplicatie funct of the following with a helper function that will send a same req to server
 function show_new_recipe(folder_id) {
 
     $("#recipes").empty()
@@ -235,6 +233,26 @@ function show_new_recipe(folder_id) {
 
     });
 }
+
+function scrape_a_recipe(evt) {
+    evt.preventDefault();
+
+    let folderidd = $("#folder_options_2").val()
+
+    $("scraped_recipe_field").toggle()
+
+    const formInputs = {
+        "folderid" : folderidd,
+        "recipe_scrape_url" : $("#url_link").val()
+    }
+
+    $.post("/myfolders/scrape_recipe", formInputs, (res) => {
+        show_new_recipe(folderidd)
+        $("#msg").html("New recipe was added!").fadeIn("slow")
+        message_fade_out() 
+    })
+
+} 
 
 
 // event: clicking on folder title...
@@ -292,19 +310,20 @@ $("#new_recipe_button").on("click", (evt) => {
 
 });
 
-// event: submitting new recipe...
-$("#recipe_addition_submit").on("click", submit_new_recipe)
+// event: clicking on RECIPE FROM URL button
+$("#recipe_from_url_button").on("click", (evt) => {
+ 
+    evt.preventDefault();
+
+    $("#scraped_recipe_field").toggle()
+
+});
 
 // event: clicking on delete a folder button
 $(".delete_folder").on("click", delete_folder)
 
+// event: submitting a new (manually entered) recipe...
+$("#recipe_addition_submit").on("click", submit_new_recipe)
 
-
-// ------ CONCERNS ------
-// -1- DONE -- remove deleted folder from the page immediately after deletion
-// -2- is it possible to display a new recipe right after it was added to the page
-//     without refreshing it? 
-// -3- DONE -- clear out folder input after submission
-// -4- if "delete folder" json is empty don't send anything to crud and handle on server
-
- 
+//event: submitting a URL to scrape a recipe... 
+$("#recipe_scraping_submit").on("click", scrape_a_recipe)

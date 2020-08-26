@@ -8,7 +8,7 @@ def web_scraper(web_page_url):
     soup = BeautifulSoup(page.content, 'html.parser')
 
     # < --- getting the first part that includes recipe title, image --- >
-    results_part1 = soup.find(class_="recipe_lead")
+    results_part1 = soup.find(class_="recipe-lead")
 
     # < --- pulling recipe title --- >
     title_element = results_part1.find('span', class_="o-AssetTitle__a-HeadlineText")
@@ -45,5 +45,5 @@ def web_scraper(web_page_url):
             "recipe_ingred" : recipe_ingredients,
             "recipe_direct" : recipe_directions,
             "recipe_url" : web_page_url,
-            "image_url" : image_url 
+            "image_url" : (f'http://{image_url}')
             }

@@ -3,6 +3,7 @@
 from flask import (Flask, jsonify, render_template, request, flash, session, redirect, url_for)
 from model import connect_to_db, Folder, User, Recipe, Tag, RecipeTag
 import crud
+import scraper
 from jinja2 import StrictUndefined
 
 app = Flask(__name__)
@@ -179,6 +180,20 @@ def add_new_recipe():
 
     return render_template('myrecipes.html', folders=folders)
 
+@app.route('/myfolders/scrape_recipe', methods=["POST"])
+def scrape_recipe():
+
+    folder_id = request.form['folderid']
+    current_folder = Folder.query.get(folder_id)
+
+    recipe_url = request.form['recipe_scrape_url']
+    recipe_elem = scraper.web_scraper(recipe_url)
+    
+    crud.create_recipe(current_folder, recipe_elem['recipe_title'], recipe_elem['recipe_ingred'], recipe_elem['recipe_direct'], recipe_elem['recipe_url'], recipe_elem['image_url'])
+
+    folders = crud.show_user_folders(session['userid'])
+
+    return render_template('myrecipes.html', folders=folders)
 
 
 @app.route('/api/myfolders/delete_recipe.json', methods=["POST"])
