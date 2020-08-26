@@ -5,11 +5,12 @@
 
     <div>
 
+        <!-- a form to create new folder -->
         <div><button id="new_folder_button">NEW FOLDER</button></div>
         <div id="new_folder_field" hidden=True></div>
 
+        <!-- a form to create new recipe -->
         <div><button id="new_recipe_button">NEW RECIPE</button></div>
-        <!-- form to create new recipe -->
         <div id="new_recipe_field" style="display: none">
             <form id="new_recipe_form">
                 <select id="folder_options">
@@ -26,17 +27,31 @@
             </form>
         </div>
 
+        <!-- a form to paste a URL for web scraping -->
+        <div><button id="recipe_from_url_button">RECIPE FROM URL</button></div>
+        <div>
+            <form>
+                <select id="folder_options_2">
+                    {% for folder in folders %}
+                        <option value="{{folder.folder_id}}">{{ folder.folder_title }}</option>
+                    {% endfor %}
+                </select>
+                <input id="url_link" placeholder="URL"></input>
+            </form>
+        </div>
+
+
         <!-- folder titles / category selectors -->
         <div id="folder_directory">
         {% for folder in folders%}
-            <div>
+            <div id="folder{{folder.folder_id}}">
                 <h1><a class="folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}" href="/myfolders"> {{ folder.folder_title }} </a></h1>
                 <button class="delete_folder" value="{{folder.folder_id}}"> Delete </button>
             </div>
         {% endfor %}
         </div>
 
-        <!-- list of recipes -->
+        <!-- a list of recipes -->
         <ul id="recipes"></ul>
 
         <!-- recipe body -->
@@ -45,12 +60,14 @@
             <ul id="directions"></ul>
         </div>
 
-
+        <!-- recipe edit body -->
         <div id="whole_recipe_edit"></div>
         <div id="new_recipe_add"></div>
 
+        <!-- alert message that dissapears -->
         <h4 id="msg"></h4>
     
+        <!-- logout button -->
         <button id="logout" name="logout" type="button"><a href="/logout">Log Out</a></button>
 
     </div>

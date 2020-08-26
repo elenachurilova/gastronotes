@@ -41,9 +41,9 @@ function submit_form(evt) {
         'image_url' : $("#image_url").val(),
     }
 
-    $.post('/myfolders/edit', formInputs, (res) => {
-        console.log(res)
-
+    $.post('/api/myfolders/edit.json', formInputs, (res) => {
+        $("#msg").html(res.success);
+        message_fade_out() 
     })
     
 }
@@ -53,12 +53,12 @@ function show_recipe(recipe) {
 
     //add li to recipes list
     
-    let li = $(`<li class="recipe_title" id=${recipe.recipe_id}><span class="show">${recipe.recipe_title}</span><span class="edit"><button> Edit </button></span></li>`)
+    let li = $(`<li class="recipe_title" id=${recipe.recipe_id}><span class="show">${recipe.recipe_title}</span><span class="edit"><button> Edit </button></span><span class="delete"><button id=${recipe.recipe_id}> Delete </button></span></li>`)
 
     $("#recipes").append(li)
 
-    //upon clicking on li, show recipe inside #whole_recipe
 
+    //clicking on recipe's NAME, show recipe
     li.find(".show").on("click", (evt) => {
 
         evt.preventDefault();
@@ -73,7 +73,7 @@ function show_recipe(recipe) {
                                     <a href=${recipe.recipe_src} id="recipesrc">${recipe.recipe_src}</a>`);
     });
 
-
+    // clicking on EDIT button, populate fields to edit a recipe
     li.find(".edit").on("click", (evt) => {
 
         $("#whole_recipe_edit").show()
@@ -98,6 +98,37 @@ function show_recipe(recipe) {
         
 
     });
+
+    // clicking on DELETE button, confirm user's selection, delete a recipe if OK
+    li.find(".delete").on("click", (evt) => {
+        evt.preventDefault();
+
+        const recipe_id_value = evt.target.id
+
+        let userPreference;
+
+		if (confirm("You sure you want to delete this recipe permanently?") == true) {
+
+            const formInputs = {
+                "recipe_id" : recipe_id_value
+            }
+
+            $.post('/api/myfolders/delete_recipe.json', formInputs, (res) => {
+                // remove li element fompletely 
+                $(`li#${recipe_id_value}`).remove()
+                $("#whole_recipe").empty()
+                userPreference = res.success;
+            })
+
+		} else {
+			userPreference = "Recipe was't deleted";
+		}
+
+        $("#msg").html(userPreference).fadeIn("slow");
+        message_fade_out() 
+
+    })
+
 }
 
 //submit new folder to db
@@ -109,21 +140,26 @@ function submit_new_folder(evt) {
         'folder_title' : $("#new_folder_title").val(),
     }
 
-    $.post('/myfolders/add_folder', formInputs, (res) => {
+    $.post('/api/myfolders/add_folder.json', formInputs, (res) => {
         $("#folder_directory").append(
-            `<div>
+            `<div id="folder${res.folder_id}">
                 <h1><a class="folder_title" id="${res.folder_id}" value="${res.folder_title}" href="/myfolders"> ${res.folder_title} </a></h1>
                 <button class="delete_folder" value="${res.folder_id}"> Delete </button>
             </div>`
         )
-    })
+    }) 
+
+    // clear out the input box after submission
+    $("#new_folder_title")[0].value = ""
 }
 
 //submit new recipe to db
 function submit_new_recipe(evt) {
     evt.preventDefault();
 
-    //hide new recipe form
+    let folder_idd = $("#folder_options").val()
+
+    //hide new recipe input form
     $("#new_recipe_field").toggle()
 
     const formInputs = {
@@ -135,13 +171,21 @@ function submit_new_recipe(evt) {
         'folderid' : $("#folder_options").val()
     }
 
-    $.post('/myfolders/add_recipe', formInputs, (res) => {
-        alert("New recipe was added!")
+    $.post('myfolders/add_recipe', formInputs, (res) => {
+        show_new_recipe(folder_idd)
+        $("#msg").html("New recipe was added!").fadeIn("slow")
+        message_fade_out() 
+
     })
 
     //clear out form contents after submission
     $("#new_recipe_form")[0].reset()
     
+}
+
+// fade out message div
+function message_fade_out() {
+    $("#msg").fadeOut(1600);
 }
 
 //delete folder and it's contents
@@ -158,8 +202,10 @@ function delete_folder(evt) {
                 "folder_id" : folder_id_value
             }
 
-            $.post('/myfolders/delete_folder', formInputs, (res) => {
-                console.log("Hello3")
+            $.post('/api/myfolders/delete_folder.json', formInputs, (res) => {
+                $(`#folder${folder_id_value}`).remove()
+                $("#recipes").empty()
+
             })
 
             userPreference = "Folder was deleted";
@@ -168,9 +214,28 @@ function delete_folder(evt) {
 			userPreference = "Folder was't deleted";
 		}
 
-	$("#msg").html(userPreference); 
+    
+    $("#msg").html(userPreference).fadeIn("slow")
+    message_fade_out() 
 
 }
+
+
+// KAT duplicatie funct of the following with a helper function that will send a same req to server
+function show_new_recipe(folder_id) {
+
+    $("#recipes").empty()
+
+    $.get(`/api/myfolders/myrecipes/${folder_id}.json`, (data) => {
+
+        for (let item of data) {
+
+            show_recipe(item)
+        }
+
+    });
+}
+
 
 // event: clicking on folder title...
 $(".folder_title").on("click", (evt) => {
@@ -184,7 +249,7 @@ $(".folder_title").on("click", (evt) => {
 
     let folder_id = evt.target.id
     
-    $.get(`/myfolders/myrecipes/${folder_id}`, (data) => {
+    $.get(`/api/myfolders/myrecipes/${folder_id}.json`, (data) => {
 
         for (let item of data) {
 
@@ -208,8 +273,10 @@ $("#new_folder_button").on("click", (evt) => {
     }
 
     $("#new_folder_field").append(
-        `<input id="new_folder_title" type="text" placeholder="Folder Title" required></input>
-        <button id="folder_addition_submit" value="Submit">Submit</button>`
+        `<form>
+            <input id="new_folder_title" type="text" placeholder="Folder Title" required="required"></input>
+            <button id="folder_addition_submit" value="Submit">Submit</button>
+        </form>`
     );
     
     $("#folder_addition_submit").on("click", submit_new_folder)
@@ -221,8 +288,6 @@ $("#new_recipe_button").on("click", (evt) => {
 
     evt.preventDefault();
 
-
-
     $("#new_recipe_field").toggle()    
 
 });
@@ -232,5 +297,14 @@ $("#recipe_addition_submit").on("click", submit_new_recipe)
 
 // event: clicking on delete a folder button
 $(".delete_folder").on("click", delete_folder)
+
+
+
+// ------ CONCERNS ------
+// -1- DONE -- remove deleted folder from the page immediately after deletion
+// -2- is it possible to display a new recipe right after it was added to the page
+//     without refreshing it? 
+// -3- DONE -- clear out folder input after submission
+// -4- if "delete folder" json is empty don't send anything to crud and handle on server
 
  

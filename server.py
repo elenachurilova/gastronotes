@@ -102,7 +102,7 @@ def show_user_folders():
 
 
 
-@app.route('/myfolders/myrecipes/<int:folder_id>')
+@app.route('/api/myfolders/myrecipes/<int:folder_id>.json')
 def show_folder_recipes(folder_id):
     """Showing recipes in folder"""
 
@@ -112,7 +112,7 @@ def show_folder_recipes(folder_id):
 
 
 
-@app.route('/myfolders/edit', methods=["POST"])
+@app.route('/api/myfolders/edit.json', methods=["POST"])
 def update_recipe():
     """Updating existing recipe"""
 
@@ -130,7 +130,7 @@ def update_recipe():
 
 
 
-@app.route('/myfolders/add_folder', methods=["POST"])
+@app.route('/api/myfolders/add_folder.json', methods=["POST"])
 def add_new_folder():
     """Adding new folder from UI"""
 
@@ -146,7 +146,7 @@ def add_new_folder():
 
 
 
-@app.route('/myfolders/delete_folder', methods=["POST"])
+@app.route('/api/myfolders/delete_folder.json', methods=["POST"])
 def delete_folder():
     """Deleting a folder and its contents"""
 
@@ -181,8 +181,21 @@ def add_new_recipe():
 
 
 
+@app.route('/api/myfolders/delete_recipe.json', methods=["POST"])
+def delete_recipe():
+
+    recipe_id = request.form['recipe_id']
+
+    crud.delete_recipe(recipe_id)
+
+    print(f"This is SERVER - recipe with id {recipe_id} was deleted")
+
+    return jsonify({"success" : "Recipe was deleted"})
+
+
 @app.route('/api/myfolders.json')
-def return_json_user_folders(): 
+def return_json_user_folders():
+    """Return a list of folders for given user"""
 
     if "userid" in session:
 

@@ -76,20 +76,21 @@ def show_user_folders(user_id):
 def show_recipe_by_folder(folder_id):
     """Find and return a list of recipes in a folder"""
 
-    folder = Folder.query.get(folder_id)
-
-    recipes = folder.recipes
+    folder = Folder.query.options(db.joinedload(Folder.recipes)).filter(Folder.folder_id==folder_id).first()
 
     recipes_list = []
 
-    for recipe in recipes:
-        recipes_list.append({"recipe_id" : recipe.recipe_id,
-                            "folder_id" : recipe.folder_id,
-                            "recipe_title" : recipe.recipe_title,
-                            "recipe_ingred" : recipe.recipe_ingred,
-                            "recipe_direct": recipe.recipe_direct,
-                            "recipe_src" : recipe.recipe_src,
-                            "picture_url" : recipe.picture_url})
+    if folder.recipes:
+        for recipe in folder.recipes:
+            recipes_list.append({"recipe_id" : recipe.recipe_id,
+                                "folder_id" : recipe.folder_id,
+                                "recipe_title" : recipe.recipe_title,
+                                "recipe_ingred" : recipe.recipe_ingred,
+                                "recipe_direct": recipe.recipe_direct,
+                                "recipe_src" : recipe.recipe_src,
+                                "picture_url" : recipe.picture_url})
+    else:
+        pass
 
     return recipes_list
 
@@ -110,11 +111,11 @@ def update_recipe(recipe_id, folder_id, recipe_title, recipe_ingred, recipe_dire
     db.session.commit()
 
 def delete_folder_and_contents(folder_id):
-    """DELETE A GIVEN FOLDER AND IT'S CONTENTS"""
+    """Delete a given folder and its contents"""
 
-    folder = Folder.query.get(folder_id)
-    recipes = folder.recipes
-    for recipe in recipes:
+    folder = Folder.query.options(db.joinedload(Folder.recipes)).filter(Folder.folder_id==folder_id).first()
+
+    for recipe in folder.recipes:
         db.session.delete(recipe)
     
     db.session.delete(folder)
@@ -122,6 +123,13 @@ def delete_folder_and_contents(folder_id):
     db.session.commit()
 
     print(f"This is CRUD - FOLDER WITH ID {folder_id} WAS DELETED")
+
+def delete_recipe(recipe_id):
+
+    recipe = Recipe.query.get(recipe_id)
+    db.session.delete(recipe)
+    db.session.commit()
+    print(f"This is CRUD - recipe with id {recipe_id} was deleted")
 
 
 if __name__ == '__main__':
