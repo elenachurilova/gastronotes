@@ -1,7 +1,7 @@
 """Server for Gastronotes app."""
 
 from flask import (Flask, jsonify, render_template, request, flash, session, redirect, url_for)
-from model import connect_to_db, Folder, User, Recipe, Tag, RecipeTag
+from model import connect_to_db, Folder, User, Recipe
 import crud
 import scraper
 from jinja2 import StrictUndefined

@@ -1,5 +1,7 @@
 "use strict";
 
+$( dragAndDropInit );
+
 //create a form to edit an existing recipe
 function create_form() {
 
@@ -53,13 +55,16 @@ function show_recipe(recipe) {
 
     //add li to recipes list
     
-    let li = $(`<li class="recipe_title" id=${recipe.recipe_id}><span class="show">${recipe.recipe_title}</span><span class="edit"><button> Edit </button></span><span class="delete"><button id=${recipe.recipe_id}> Delete </button></span></li>`)
+    let li = $(`<li class="makeMeDraggable recipe_title" id=${recipe.recipe_id}><span class="show">${recipe.recipe_title}</span><span class="edit"><button> Edit </button></span><span class="delete"><button id=${recipe.recipe_id}> Delete </button></span></li>`)
 
     $("#recipes").append(li)
 
+    // apply draggable & droppable properties to these freshly-rendered elements 
+    dragAndDropInit();
+
 
     //clicking on recipe's NAME, show recipe
-    li.find(".show").on("click", (evt) => {
+    li.find(".show").on("dblclick", (evt) => {
 
         evt.preventDefault();
 
@@ -99,7 +104,7 @@ function show_recipe(recipe) {
 
     });
 
-    // clicking on DELETE button, confirm user's selection, delete a recipe if OK
+    // clicking on DELETE (recipe) button, confirm user's selection, delete a recipe if OK
     li.find(".delete").on("click", (evt) => {
         evt.preventDefault();
 
@@ -143,7 +148,7 @@ function submit_new_folder(evt) {
     $.post('/api/myfolders/add_folder.json', formInputs, (res) => {
         $("#folder_directory").append(
             `<div id="folder${res.folder_id}">
-                <h1><a class="folder_title" id="${res.folder_id}" value="${res.folder_title}" href="/myfolders"> ${res.folder_title} </a></h1>
+                <h1><a class="folder_title droppable" id="${res.folder_id}" value="${res.folder_title}" href="/myfolders"> ${res.folder_title} </a></h1>
                 <button class="delete_folder" value="${res.folder_id}"> Delete </button>
             </div>`
         )
@@ -255,6 +260,47 @@ function scrape_a_recipe(evt) {
 } 
 
 
+// < ---------- DRAG AND DROP ---------- > 
+
+function dragAndDropInit() {
+    $(".makeMeDraggable").draggable();
+    $(".makeMeDroppable").droppable( {
+        drop: handleDropEvent,
+    });
+}
+
+function handleDropEvent( event, ui ) {
+
+    console.log(event)
+    console.log(event.target)
+    alert("Drop has happened")
+
+    console.log(`Recipe ID ${ui.draggable.attr('id')}`)
+    console.log(`Folder ID ${event.target.id}`)
+
+
+
+    // var draggable = ui.draggable;
+
+    // $(".makeMeDroppable").on("mouseover", function(event) {
+
+    //     const title = event.target
+    //     event.target.style.color = "orange";
+
+    //     setTimeout(function() {
+
+    //         title.style.color = "black";;
+    //     }, 300);
+
+    //     $(".makeMeDraggable").hide()
+    // })
+    
+}
+
+// < ---------- DRAG AND DROP ---------- > 
+
+
+
 // event: clicking on folder title...
 $(".folder_title").on("click", (evt) => {
 
@@ -264,6 +310,7 @@ $(".folder_title").on("click", (evt) => {
     $("#recipes").empty()
     $("#whole_recipe").empty()
     $("#whole_recipe_edit").empty()
+
 
     let folder_id = evt.target.id
     
@@ -275,6 +322,8 @@ $(".folder_title").on("click", (evt) => {
         }
 
     });
+
+    dragAndDropInit();
     
 });
 

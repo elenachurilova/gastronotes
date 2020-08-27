@@ -29,7 +29,7 @@ class User(db.Model):
     lname = db.Column(db.String(20))
 
     folders = db.relationship('Folder')
-    tags = db.relationship('Tag')
+    # tags = db.relationship('Tag')
 
     def __repr__(self):
         return f'<User user_id={self.user_id}, email={self.email}, name={self.fname, self.lname}>'
@@ -67,46 +67,46 @@ class Recipe(db.Model):
     picture_url = db.Column(db.String)
 
     folder = db.relationship('Folder')
-    recipe_tags = db.relationship('Tag', 
-                                   secondary='recipe_tags')
+    # recipe_tags = db.relationship('Tag', 
+    #                                secondary='recipe_tags')
 
     def __repr__(self):
         return f'<Recipe recipe_id={self.recipe_id}, title={self.recipe_title}>'
 
 
-class Tag(db.Model):
+# class Tag(db.Model):
 
-    __tablename__ = "tags"
+#     __tablename__ = "tags"
 
-    tag_id = db.Column(db.Integer,
-                          autoincrement=True,
-                          primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    tag_name = db.Column(db.String)
+#     tag_id = db.Column(db.Integer,
+#                           autoincrement=True,
+#                           primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+#     tag_name = db.Column(db.String)
 
-    user = db.relationship('User')
-    recipe_tags = db.relationship('Recipe', 
-                                   secondary='recipe_tags')
+#     user = db.relationship('User')
+#     recipe_tags = db.relationship('Recipe', 
+#                                    secondary='recipe_tags')
 
-    def __repr__(self):
-        return f'<Tag recipe_id={self.tag_id}, tag_name={self.tag_name}>'
+#     def __repr__(self):
+#         return f'<Tag recipe_id={self.tag_id}, tag_name={self.tag_name}>'
 
 
-class RecipeTag(db.Model):
+# class RecipeTag(db.Model):
 
-    __tablename__ = "recipe_tags"
+#     __tablename__ = "recipe_tags"
 
-    recipe_tag_id = db.Column(db.Integer,
-                          autoincrement=True,
-                          primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tags.tag_id'))
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
+#     recipe_tag_id = db.Column(db.Integer,
+#                           autoincrement=True,
+#                           primary_key=True)
+#     tag_id = db.Column(db.Integer, db.ForeignKey('tags.tag_id'))
+#     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
 
-    tag = db.relationship('Tag')
-    recipe = db.relationship('Recipe')
+#     tag = db.relationship('Tag')
+#     recipe = db.relationship('Recipe')
 
-    def __repr__(self):
-        return f'<RecipeTag tag_id={self.tag_id} recipe_id={self.recipe_id}>'
+#     def __repr__(self):
+#         return f'<RecipeTag tag_id={self.tag_id} recipe_id={self.recipe_id}>'
 
 
 if __name__ == '__main__':

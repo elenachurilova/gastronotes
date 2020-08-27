@@ -24,8 +24,8 @@ with open('data/recipes_data.json') as r:
 with open('data/folders_data.json') as f:
     folders_data = json.loads(f.read())
 
-with open('data/tags_data.json') as t:
-    tags_data = json.loads(t.read()) 
+# with open('data/tags_data.json') as t:
+#     tags_data = json.loads(t.read()) 
 
 
 for user in range(5):
@@ -55,17 +55,17 @@ for user in range(5):
 
             new_recipe = crud.create_recipe(new_folder, recipe_title, recipe_ingred, recipe_direct, recipe_src, picture_url)
 
-        for tg in range(3):
+        # for tg in range(3):
 
-            tags = []
+        #     tags = []
 
-            random_tag = choice(tags_data["tag"])
+        #     random_tag = choice(tags_data["tag"])
 
-            new_tag = crud.create_tag(new_user, random_tag)
+        #     new_tag = crud.create_tag(new_user, random_tag)
 
-            tags.append(new_tag)
+        #     tags.append(new_tag)
 
-            current_tag = crud.create_recipe_tag((choice(tags)), new_recipe)
+        #     current_tag = crud.create_recipe_tag((choice(tags)), new_recipe)
 
 
 

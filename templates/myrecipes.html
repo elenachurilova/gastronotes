@@ -46,7 +46,7 @@
         <div id="folder_directory">
         {% for folder in folders%}
             <div id="folder{{folder.folder_id}}">
-                <h1><a class="folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}" href="/myfolders"> {{ folder.folder_title }} </a></h1>
+                <h1 class="makeMeDroppable"><a class="folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}" href="/myfolders"> {{ folder.folder_title }} </a></h1>
                 <button class="delete_folder" value="{{folder.folder_id}}"> Delete </button>
             </div>
         {% endfor %}
@@ -71,6 +71,8 @@
         <!-- logout button -->
         <button id="logout" name="logout" type="button"><a href="/logout">Log Out</a></button>
 
+        <div class="makeMeDraggable">I AM DRAGGABLE </div>
+        <div class="makeMeDroppable"> I AM DROPPBALE - DROP HERE</div>
     </div>
 
 {% endblock %}
