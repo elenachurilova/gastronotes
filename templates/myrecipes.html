@@ -30,7 +30,7 @@
         <!-- a form to paste a URL for web scraping -->
         <div><button id="recipe_from_url_button">RECIPE FROM URL</button></div>
         <div id="scraped_recipe_field" style="display: none">
-            <form>
+            <form id="scraped_recipe_form">
                 <select id="folder_options_2">
                     {% for folder in folders %}
                         <option value="{{folder.folder_id}}">{{ folder.folder_title }}</option>
@@ -46,7 +46,7 @@
         <div id="folder_directory">
         {% for folder in folders%}
             <div id="folder{{folder.folder_id}}">
-                <h1 class="makeMeDroppable"><a class="folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}" href="/myfolders"> {{ folder.folder_title }} </a></h1>
+                <h1 class="makeMeDroppable folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}"> {{ folder.folder_title }}</h1>
                 <button class="delete_folder" value="{{folder.folder_id}}"> Delete </button>
             </div>
         {% endfor %}

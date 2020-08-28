@@ -110,6 +110,16 @@ def update_recipe(recipe_id, folder_id, recipe_title, recipe_ingred, recipe_dire
     
     db.session.commit()
 
+
+def update_recipes_folder(recipe_id, folder_id):
+    """Update folder for given recipe"""
+
+    recipe = Recipe.query.options(db.joinedload(Recipe.folder)).filter(Recipe.recipe_id==recipe_id).first() 
+    recipe.folder_id = folder_id
+    
+    db.session.commit()
+
+
 def delete_folder_and_contents(folder_id):
     """Delete a given folder and its contents"""
 

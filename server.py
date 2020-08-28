@@ -102,7 +102,6 @@ def show_user_folders():
         return render_template('myrecipes.html', folders=folders)
 
 
-
 @app.route('/api/myfolders/myrecipes/<int:folder_id>.json')
 def show_folder_recipes(folder_id):
     """Showing recipes in folder"""
@@ -112,8 +111,7 @@ def show_folder_recipes(folder_id):
     return jsonify(recipes_list)
 
 
-
-@app.route('/api/myfolders/edit.json', methods=["POST"])
+@app.route('/api/myfolders/edit_recipe.json', methods=["POST"])
 def update_recipe():
     """Updating existing recipe"""
 
@@ -180,8 +178,10 @@ def add_new_recipe():
 
     return render_template('myrecipes.html', folders=folders)
 
+
 @app.route('/myfolders/scrape_recipe', methods=["POST"])
 def scrape_recipe():
+    """Scrape a recipe using scraper file"""
 
     folder_id = request.form['folderid']
     current_folder = Folder.query.get(folder_id)
@@ -198,6 +198,7 @@ def scrape_recipe():
 
 @app.route('/api/myfolders/delete_recipe.json', methods=["POST"])
 def delete_recipe():
+    """Remove a given recipe from the database"""
 
     recipe_id = request.form['recipe_id']
 
@@ -206,6 +207,17 @@ def delete_recipe():
     print(f"This is SERVER - recipe with id {recipe_id} was deleted")
 
     return jsonify({"success" : "Recipe was deleted"})
+
+@app.route('/api/myfolders/update_recipe_folder.json', methods=["POST"])
+def update_recipe_folder():
+    """Update folder id for a given recipe"""
+
+    recipe_id = request.form['recipe_id']
+    folder_id = request.form['folder_id']
+
+    crud.update_recipes_folder(recipe_id, folder_id)
+
+    return jsonify({"success" : "Recipe was moved!"})
 
 
 @app.route('/api/myfolders.json')

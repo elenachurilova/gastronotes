@@ -1,5 +1,7 @@
 "use strict";
 
+// < ---------------- FUNCTIONS ---------------- > 
+
 $( dragAndDropInit );
 
 //create a form to edit an existing recipe
@@ -43,7 +45,7 @@ function submit_form(evt) {
         'image_url' : $("#image_url").val(),
     }
 
-    $.post('/api/myfolders/edit.json', formInputs, (res) => {
+    $.post('/api/myfolders/edit_recipe.json', formInputs, (res) => {
         $("#msg").html(res.success);
         message_fade_out() 
     })
@@ -148,7 +150,7 @@ function submit_new_folder(evt) {
     $.post('/api/myfolders/add_folder.json', formInputs, (res) => {
         $("#folder_directory").append(
             `<div id="folder${res.folder_id}">
-                <h1><a class="folder_title droppable" id="${res.folder_id}" value="${res.folder_title}" href="/myfolders"> ${res.folder_title} </a></h1>
+                <h1 class="makeMeDroppable folder_title" id="${res.folder_id}" value="${res.folder_title}"> ${res.folder_title} </h1>
                 <button class="delete_folder" value="${res.folder_id}"> Delete </button>
             </div>`
         )
@@ -225,6 +227,7 @@ function delete_folder(evt) {
 
 }
 
+
 function show_new_recipe(folder_id) {
 
     $("#recipes").empty()
@@ -244,8 +247,8 @@ function scrape_a_recipe(evt) {
 
     let folderidd = $("#folder_options_2").val()
 
-    $("scraped_recipe_field").toggle()
-
+    $("#scraped_recipe_field").toggle()
+    
     const formInputs = {
         "folderid" : folderidd,
         "recipe_scrape_url" : $("#url_link").val()
@@ -255,15 +258,18 @@ function scrape_a_recipe(evt) {
         show_new_recipe(folderidd)
         $("#msg").html("New recipe was added!").fadeIn("slow")
         message_fade_out() 
+        $("#scraped_recipe_form")[0].reset()
     })
 
 } 
 
-
-// < ---------- DRAG AND DROP ---------- > 
-
 function dragAndDropInit() {
-    $(".makeMeDraggable").draggable();
+    $(".makeMeDraggable").draggable({
+        // containment: 'document',
+        cursor: 'move',
+        snap: 'document'
+
+    });
     $(".makeMeDroppable").droppable( {
         drop: handleDropEvent,
     });
@@ -271,35 +277,20 @@ function dragAndDropInit() {
 
 function handleDropEvent( event, ui ) {
 
-    console.log(event)
-    console.log(event.target)
-    alert("Drop has happened")
+    event.preventDefault();
 
-    console.log(`Recipe ID ${ui.draggable.attr('id')}`)
-    console.log(`Folder ID ${event.target.id}`)
+    const formInputs = {
+        'recipe_id' : `${ui.draggable.attr('id')}`,
+        'folder_id' : `${event.target.id}`,
+    }
 
-
-
-    // var draggable = ui.draggable;
-
-    // $(".makeMeDroppable").on("mouseover", function(event) {
-
-    //     const title = event.target
-    //     event.target.style.color = "orange";
-
-    //     setTimeout(function() {
-
-    //         title.style.color = "black";;
-    //     }, 300);
-
-    //     $(".makeMeDraggable").hide()
-    // })
+    $.post('/api/myfolders/update_recipe_folder.json', formInputs, () => {
+        show_new_recipe(`${event.target.id}`)
+    })
     
 }
 
-// < ---------- DRAG AND DROP ---------- > 
-
-
+// < ---------------- EVENTS ---------------- > 
 
 // event: clicking on folder title...
 $(".folder_title").on("click", (evt) => {
