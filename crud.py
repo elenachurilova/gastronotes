@@ -37,28 +37,6 @@ def create_recipe(folder, recipe_title, recipe_ingred, recipe_direct,
 
     return recipe
 
-
-def create_tag(user, tag_name):
-    """Create and return a new tag"""
-
-    tag = Tag(user=user, tag_name=tag_name)
-
-    db.session.add(tag)
-    db.session.commit()
-
-    return tag
-
-
-def create_recipe_tag(tag, recipe):
-    """Create and return a new recipe tag"""
-
-    recipe_tag = RecipeTag(tag=tag, recipe=recipe)
-
-    db.session.add(recipe_tag)
-    db.session.commit()
-
-    return recipe_tag
-
 def get_user_by_email(email):
     """Find and return a user by their email"""
 
@@ -140,6 +118,35 @@ def delete_recipe(recipe_id):
     db.session.delete(recipe)
     db.session.commit()
     print(f"This is CRUD - recipe with id {recipe_id} was deleted")
+
+def search_for_recipe(user_id, data):
+    
+    print(f"THIS IS CRUD -- SEARCH STRING IS *************** {data}")
+    
+    return db.session.query(Recipe).join(Folder).join(User).filter( (User.user_id == user_id) & ( (Recipe.recipe_title.like("%" +data+ "%")) | (Recipe.recipe_ingred.like("%" +data+ "%")) | (Recipe.recipe_direct.like("%" +data+ "%")))).all()
+
+    # return Recipe.query.filter((Recipe.recipe_title.like("%" +data+ "%")) | (Recipe.recipe_ingred.like("%" +data+ "%")) | (Recipe.recipe_direct.like("%" +data+ "%"))).all()
+
+
+# def create_tag(user, tag_name):
+#     """Create and return a new tag"""
+
+#     tag = Tag(user=user, tag_name=tag_name)
+
+#     db.session.add(tag)
+#     db.session.commit()
+
+#     return tag
+
+# def create_recipe_tag(tag, recipe):
+#     """Create and return a new recipe tag"""
+
+#     recipe_tag = RecipeTag(tag=tag, recipe=recipe)
+
+#     db.session.add(recipe_tag)
+#     db.session.commit()
+
+#     return recipe_tag
 
 
 if __name__ == '__main__':

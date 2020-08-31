@@ -5,41 +5,23 @@
 
     <div>
 
+        <!-- search bar and button -->
+        <div id="search_bar">
+            <input id="search_input" type="text" placeholder="Search by keyword"></input>
+            <button id="search_button" value="search_button">Submit</button>
+        </div>
+
         <!-- a form to create new folder -->
         <div><button id="new_folder_button">NEW FOLDER</button></div>
         <div id="new_folder_field" hidden=True></div>
 
         <!-- a form to create new recipe -->
         <div><button id="new_recipe_button">NEW RECIPE</button></div>
-        <div id="new_recipe_field" style="display: none">
-            <form id="new_recipe_form">
-                <select id="folder_options">
-                    {% for folder in folders %}
-                        <option value="{{folder.folder_id}}">{{ folder.folder_title }}</option>
-                    {% endfor %}
-                </select>
-                    <input id="recipe_ttl" placeholder="Recipe Title" required></input>
-                    <textarea id="recipe_ing" placeholder="Ingredients" required></textarea>
-                    <textarea id="recipe_dir" placeholder="Directions" required></textarea>
-                    <input id="recipe_source" placeholder="Source - self or URL"  required></input>
-                    <input id="picture_url" placeholder="Picture URL" required></input>
-                    <button id="recipe_addition_submit" value="Submit">Submit</button>
-            </form>
-        </div>
+        <div id="new_recipe_field" style="display: none"></div>
 
         <!-- a form to paste a URL for web scraping -->
         <div><button id="recipe_from_url_button">RECIPE FROM URL</button></div>
-        <div id="scraped_recipe_field" style="display: none">
-            <form id="scraped_recipe_form">
-                <select id="folder_options_2">
-                    {% for folder in folders %}
-                        <option value="{{folder.folder_id}}">{{ folder.folder_title }}</option>
-                    {% endfor %}
-                </select>
-                <input id="url_link" placeholder="URL"></input>
-                <button id="recipe_scraping_submit" value="Submit">Submit</button>
-            </form>
-        </div>
+        <div id="scraped_recipe_field" style="display: none"></div>
 
 
         <!-- folder titles / category selectors -->
@@ -56,10 +38,7 @@
         <ul id="recipes"></ul>
 
         <!-- recipe body -->
-        <div id="whole_recipe">
-            <ul id="ingredients"></ul>
-            <ul id="directions"></ul>
-        </div>
+        <div id="whole_recipe"></div>
 
         <!-- recipe edit body -->
         <div id="whole_recipe_edit"></div>
@@ -67,12 +46,17 @@
 
         <!-- alert message that dissapears -->
         <h4 id="msg"></h4>
+
+        <!-- search results -->
+        <div id="search_results">
+            <ul id="search_list"></ul>
+            <div id="searched_recipe_body"></div>
+        </div>
     
         <!-- logout button -->
         <button id="logout" name="logout" type="button"><a href="/logout">Log Out</a></button>
 
-        <div class="makeMeDraggable">I AM DRAGGABLE </div>
-        <div class="makeMeDroppable"> I AM DROPPBALE - DROP HERE</div>
+
     </div>
 
 {% endblock %}

@@ -3,6 +3,7 @@
 // < ---------------- FUNCTIONS ---------------- > 
 
 $( dragAndDropInit );
+// $ ( wysIwyg );
 
 //create a form to edit an existing recipe
 function create_form() {
@@ -10,20 +11,27 @@ function create_form() {
     $("#whole_recipe_edit").append(
 
         `<form>
+            <label for="folder__options">Select a folder:</label>
             <select id="folder__options"></select>
             <input id="recipe_id_field" type="hidden">
+            <label for="recipe_title">Enter recipe title:</label>
             <input type="text" id="recipe_title" name="recipe_title" placeholder="Recipe Title">
-            <textarea  id="recipe_ingred" name="recipe_ingred"
-            rows="5" cols="33" placeholder="List Of Ingredients"></textarea>
-            <textarea id="recipe_direct" name="recipe_direct" rows="5" cols="33" placeholder="Directions"></textarea>
+            <label for="recipe_src">Recipe link (optional but recommended):</label>
             <input type="text" id="recipe_src" name="recipe_src" placeholder="Recipe Source">
+            <label for="image_url">Picture link (optional but recommended):</label>
             <input type="text" id="image_url" name="image_url" placeholder="URL to picture">
+            <label for="recipe_ingred">Edit ingredients:</label>
+            <textarea id="recipe_ingred" class="editor" name="recipe_ingred" rows="5" cols="33" placeholder="List Of Ingredients"></textarea>
+            <label for="recipe_direct">Edit directions:</label>
+            <textarea id="recipe_direct" class="editor" name="recipe_direct" rows="5" cols="33" placeholder="Directions"></textarea>
 
             <button id="edition_submit" value="Submit">Submit</button>
         </form>
         `
     );
 
+    wysIwyg();
+        
     $("#edition_submit").on("click", submit_form)
 
 }
@@ -39,8 +47,8 @@ function submit_form(evt) {
         'recipe_id' : $("#recipe_id_field").val(),
         'folder_id' : $("#folder__options").children(":selected").attr("id"),
         'recipe_title' : $("#recipe_title").val(),
-        'recipe_ingred' : $("#recipe_ingred").val(),
-        'recipe_direct' : $("#recipe_direct").val(),
+        'recipe_ingred' : $("#recipe_ingred").trumbowyg('html'),
+        'recipe_direct' : $("#recipe_direct").trumbowyg('html'),
         'recipe_src' : $("#recipe_src").val(),
         'image_url' : $("#image_url").val(),
     }
@@ -78,6 +86,8 @@ function show_recipe(recipe) {
                                     <ul id="recipeingred">${recipe.recipe_ingred}</ul>
                                     <ul id="recipedirect">${recipe.recipe_direct}</ul>
                                     <a href=${recipe.recipe_src} id="recipesrc">${recipe.recipe_src}</a>`);
+    
+        $("#whole_recipe").show()
     });
 
     // clicking on EDIT button, populate fields to edit a recipe
@@ -85,6 +95,8 @@ function show_recipe(recipe) {
 
         $("#whole_recipe_edit").show()
         $("#whole_recipe_edit").empty()
+        // when edit button is hit hide recipe view 
+        $("#whole_recipe").hide()
         
         evt.preventDefault();
 
@@ -98,8 +110,8 @@ function show_recipe(recipe) {
 
         $("#recipe_id_field").val(recipe.recipe_id)
         $("#recipe_title").val(recipe.recipe_title)
-        $("#recipe_ingred").val(recipe.recipe_ingred)
-        $("#recipe_direct").val(recipe.recipe_direct)
+        $("#recipe_ingred").trumbowyg('html', recipe.recipe_ingred)
+        $("#recipe_direct").trumbowyg('html', recipe.recipe_direct)
         $("#recipe_src").val(recipe.recipe_src)
         $("#image_url").val(recipe.picture_url)
         
@@ -160,6 +172,41 @@ function submit_new_folder(evt) {
     $("#new_folder_title")[0].value = ""
 }
 
+//render html for new recipe addition 
+function create_edition_form() {
+
+    $("#new_recipe_field").empty();
+    $("#new_recipe_field").toggle()
+
+    $("#new_recipe_field").append(`
+        <form id="new_recipe_form">
+            <label for="folder_options">Select a folder:</label>
+                <select id="folder_options" required></select>
+            <label for="recipe_ttl">Enter recipe title:</label>
+                <input id="recipe_ttl" placeholder="Recipe Title" required></input>
+            <label for="recipe_source">Recipe link (optional but recommended):</label>
+                <input id="recipe_source" placeholder="Source - self or URL"  required></input>
+            <label for="picture_url">Picture link (optional but recommended):</label>
+                <input id="picture_url" placeholder="Picture URL" required></input>
+            <label for="recipe_ing">Enter ingredients:</label>
+                <textarea id="recipe_ing" class="editor" placeholder="Ingredients" required></textarea>
+            <label for="recipe_dir">Enter directions:</label>
+                <textarea id="recipe_dir" class="editor" placeholder="Directions" required></textarea>
+            <button id="recipe_addition_submit" value="Submit">Submit</button>
+        </form>`)
+
+    $.get('/api/myfolders.json', (res) => {
+
+        for (const folder of res) {
+            $("#folder_options").append(`<option id="${folder.folder_id}" value="${folder.folder_id}" > ${folder.folder_title} </option>`)
+        }
+    });
+
+    wysIwyg();
+
+}
+
+
 //submit new recipe to db
 function submit_new_recipe(evt) {
     evt.preventDefault();
@@ -171,8 +218,8 @@ function submit_new_recipe(evt) {
 
     const formInputs = {
         'recipe_title' : $("#recipe_ttl").val(),
-        'recipe_ingred' : $("#recipe_ing").val(),
-        'recipe_direct' : $("#recipe_dir").val(),
+        'recipe_ingred' : $("#recipe_ing").trumbowyg('html'),
+        'recipe_direct' : $("#recipe_dir").trumbowyg('html'),
         'recipe_src' : $("#recipe_source").val(),
         'picture_url' : $("#picture_url").val(),
         'folderid' : $("#folder_options").val()
@@ -186,7 +233,9 @@ function submit_new_recipe(evt) {
     })
 
     //clear out form contents after submission
-    $("#new_recipe_form")[0].reset()
+    $("#new_recipe_form")[0].reset();
+    $('#recipe_ing.editor').trumbowyg('empty');
+    $('#recipe_dir.editor').trumbowyg('empty')
     
 }
 
@@ -227,7 +276,7 @@ function delete_folder(evt) {
 
 }
 
-
+//get folders list from the server and pass to show_recipe function
 function show_new_recipe(folder_id) {
 
     $("#recipes").empty()
@@ -242,6 +291,31 @@ function show_new_recipe(folder_id) {
     });
 }
 
+function create_scraping_form() {
+
+    $("#scraped_recipe_field").empty()
+    $("#scraped_recipe_field").toggle()
+
+    $("#scraped_recipe_field").append(`
+        <form id="scraped_recipe_form">
+            <label for="folder_options_2">Select a folder:</label>
+            <select id="folder_options_2" required></select>
+            <label for="url_link">Paste recipe link:</label>
+            <input id="url_link" placeholder="URL"></input>
+            <button id="recipe_scraping_submit" value="Submit">Submit</button>
+        </form>`)
+
+    $.get('/api/myfolders.json', (res) => {
+
+        for (const folder of res) {
+            $("#folder_options_2").append(`<option id="${folder.folder_id}" value="${folder.folder_id}"> ${folder.folder_title} </option>`)
+        }
+    });
+
+    wysIwyg();
+}
+
+//scrape a recipe using given user input (URL and folder id)
 function scrape_a_recipe(evt) {
     evt.preventDefault();
 
@@ -263,6 +337,7 @@ function scrape_a_recipe(evt) {
 
 } 
 
+//initiate drag and drop functionalities on selected elements
 function dragAndDropInit() {
     $(".makeMeDraggable").draggable({
         // containment: 'document',
@@ -275,6 +350,7 @@ function dragAndDropInit() {
     });
 }
 
+//detect dropped recipe's id and folder_id and submit to DB
 function handleDropEvent( event, ui ) {
 
     event.preventDefault();
@@ -288,6 +364,27 @@ function handleDropEvent( event, ui ) {
         show_new_recipe(`${event.target.id}`)
     })
     
+}
+
+//initiate wysiwig library on .editor class elements
+function wysIwyg() {
+    $('.editor').trumbowyg({
+        removeformatPasted: true,
+        btns: [
+            ['viewHTML'],
+            ['undo', 'redo'], // Only supported in Blink browsers
+            ['formatting'],
+            ['strong', 'em', 'del'],
+            ['superscript', 'subscript'],
+            ['link'],
+            ['insertImage'],
+            ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+            ['unorderedList', 'orderedList'],
+            ['horizontalRule'],
+            ['removeformat'],
+            ['fullscreen'],
+        ]
+    });
 }
 
 // < ---------------- EVENTS ---------------- > 
@@ -342,22 +439,10 @@ $("#new_folder_button").on("click", (evt) => {
 });
 
 // event: clicking on NEW RECIPE button...
-$("#new_recipe_button").on("click", (evt) => {
-
-    evt.preventDefault();
-
-    $("#new_recipe_field").toggle()    
-
-});
+$("#new_recipe_button").on("click", create_edition_form);
 
 // event: clicking on RECIPE FROM URL button
-$("#recipe_from_url_button").on("click", (evt) => {
- 
-    evt.preventDefault();
-
-    $("#scraped_recipe_field").toggle()
-
-});
+$("#recipe_from_url_button").on("click", create_scraping_form);
 
 // event: clicking on delete a folder button
 $(".delete_folder").on("click", delete_folder)
@@ -367,3 +452,66 @@ $("#recipe_addition_submit").on("click", submit_new_recipe)
 
 //event: submitting a URL to scrape a recipe... 
 $("#recipe_scraping_submit").on("click", scrape_a_recipe)
+
+//event: clicking on search submit button
+$("#search_button").on("click", search_for_recipe);
+
+function search_for_recipe() {
+
+    $("#recipes").empty()
+    $("#search_list").empty()
+    $("#searched_recipe_body").empty()
+
+    const userInput = {
+        "data" : $("#search_input").val()
+    }
+
+    console.log(userInput)
+
+    $.get('/api/search.json', userInput, (res) => {
+    
+        for (let recipe of res) {
+
+            show_searched_recipe(recipe)
+        }
+    });
+}
+
+
+function show_searched_recipe(recipe) {
+
+    // add each recipe to search list
+
+    console.log("Hello 1")
+    let li = $(`<li class="searched_recipe" id="${recipe.recipe_id}" value="${recipe.recipe_id}"><span class="show_search_result"> ${recipe.recipe_title} </span></li>`)
+
+    console.log("Hello 2")
+    if (recipe.hasOwnProperty('recipe_title')) {
+        $("#search_list").append(li)
+        console.log("Hello 3")
+    } else { 
+        $("#search_list").append(`<div> ${recipe.error} <div>`)
+        console.log("Hello 3.1")
+    }
+
+    //clicking on recipe's name, show recipe
+    li.find(".show_search_result").on("click", (evt) => {
+
+        //const recipe_id_val = evt.target.id
+        console.log("Hello 4")
+        evt.preventDefault();
+
+        $("#searched_recipe_body").empty()
+
+        $("#searched_recipe_body").append(`<h1 id="rec_title">${recipe.recipe_title}</h1>
+                                            <img id="rec_image" width="400" height="300" src="${recipe.picture_url}"></img>
+                                            <ul id="rec_ingred">${recipe.recipe_ingredients}</ul>
+                                            <ul id="rec_direct">${recipe.recipe_directions}</ul>
+                                            <a href=${recipe.recipe_source} id="rec_src">${recipe.recipe_source}</a>`);
+
+        console.log("Hello 5")
+
+
+});
+
+}

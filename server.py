@@ -237,7 +237,33 @@ def return_json_user_folders():
 
     return jsonify(folders_list)
 
+@app.route('/api/search.json')
+def search_for_recipe():
+    """Return a list of current user's recipes that contain a given string"""
 
+    search_string = request.args.get('data')
+    current_user_id = session['userid']
+
+    print(f'THIS SERVER. SEARCH STRING IS *************** {search_string}')
+
+    search = crud.search_for_recipe(current_user_id, search_string)
+
+    search_results = []
+
+    if search:
+        for recipe in search:
+            search_results.append({"recipe_id" : recipe.recipe_id,
+                                    "folder_id" : recipe.folder_id,
+                                    "recipe_title" : recipe.recipe_title,
+                                    "recipe_ingredients" : recipe.recipe_ingred,
+                                    "recipe_directions" : recipe.recipe_direct,
+                                    "recipe_source" : recipe.recipe_src,
+                                    "picture_url" : recipe.picture_url 
+                                })
+    else:
+        search_results.append({"error" : "Nothing found"})
+
+    return jsonify(search_results)
 
 
 if __name__ == '__main__':
