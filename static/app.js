@@ -312,11 +312,14 @@ function create_scraping_form() {
         }
     });
 
+    //event: submitting a URL to scrape a recipe... 
+    $("#recipe_scraping_submit").on("click", scrape_a_recipe)
     wysIwyg();
 }
 
 //scrape a recipe using given user input (URL and folder id)
 function scrape_a_recipe(evt) {
+
     evt.preventDefault();
 
     let folderidd = $("#folder_options_2").val()
@@ -364,6 +367,58 @@ function handleDropEvent( event, ui ) {
         show_new_recipe(`${event.target.id}`)
     })
     
+}
+
+function search_for_recipe() {
+
+    $("#recipes").empty()
+    $("#search_list").empty()
+    $("#searched_recipe_body").empty()
+
+    const userInput = {
+        "data" : $("#search_input").val()
+    }
+
+    console.log(userInput)
+
+    $.get('/api/search.json', userInput, (res) => {
+    
+        for (let recipe of res) {
+
+            show_searched_recipe(recipe)
+        }
+    });
+}
+
+function show_searched_recipe(recipe) {
+
+    // add each recipe to search list
+
+    let li = $(`<li class="searched_recipe" id="${recipe.recipe_id}" value="${recipe.recipe_id}"><span class="show_search_result"> ${recipe.recipe_title} </span></li>`)
+
+    if (recipe.hasOwnProperty('recipe_title')) {
+        $("#search_list").append(li)
+        
+    } else { 
+        $("#search_list").append(`<div> ${recipe.error} <div>`)
+        
+    }
+
+    //clicking on recipe's name, show recipe
+    li.find(".show_search_result").on("click", (evt) => {
+
+        evt.preventDefault();
+
+        $("#searched_recipe_body").empty()
+
+        $("#searched_recipe_body").append(`<h1 id="rec_title">${recipe.recipe_title}</h1>
+                                            <img id="rec_image" width="400" height="300" src="${recipe.picture_url}"></img>
+                                            <ul id="rec_ingred">${recipe.recipe_ingredients}</ul>
+                                            <ul id="rec_direct">${recipe.recipe_directions}</ul>
+                                            <a href=${recipe.recipe_source} id="rec_src">${recipe.recipe_source}</a>`);
+
+});
+
 }
 
 //initiate wysiwig library on .editor class elements
@@ -450,68 +505,6 @@ $(".delete_folder").on("click", delete_folder)
 // event: submitting a new (manually entered) recipe...
 $("#recipe_addition_submit").on("click", submit_new_recipe)
 
-//event: submitting a URL to scrape a recipe... 
-$("#recipe_scraping_submit").on("click", scrape_a_recipe)
-
 //event: clicking on search submit button
 $("#search_button").on("click", search_for_recipe);
 
-function search_for_recipe() {
-
-    $("#recipes").empty()
-    $("#search_list").empty()
-    $("#searched_recipe_body").empty()
-
-    const userInput = {
-        "data" : $("#search_input").val()
-    }
-
-    console.log(userInput)
-
-    $.get('/api/search.json', userInput, (res) => {
-    
-        for (let recipe of res) {
-
-            show_searched_recipe(recipe)
-        }
-    });
-}
-
-
-function show_searched_recipe(recipe) {
-
-    // add each recipe to search list
-
-    console.log("Hello 1")
-    let li = $(`<li class="searched_recipe" id="${recipe.recipe_id}" value="${recipe.recipe_id}"><span class="show_search_result"> ${recipe.recipe_title} </span></li>`)
-
-    console.log("Hello 2")
-    if (recipe.hasOwnProperty('recipe_title')) {
-        $("#search_list").append(li)
-        console.log("Hello 3")
-    } else { 
-        $("#search_list").append(`<div> ${recipe.error} <div>`)
-        console.log("Hello 3.1")
-    }
-
-    //clicking on recipe's name, show recipe
-    li.find(".show_search_result").on("click", (evt) => {
-
-        //const recipe_id_val = evt.target.id
-        console.log("Hello 4")
-        evt.preventDefault();
-
-        $("#searched_recipe_body").empty()
-
-        $("#searched_recipe_body").append(`<h1 id="rec_title">${recipe.recipe_title}</h1>
-                                            <img id="rec_image" width="400" height="300" src="${recipe.picture_url}"></img>
-                                            <ul id="rec_ingred">${recipe.recipe_ingredients}</ul>
-                                            <ul id="rec_direct">${recipe.recipe_directions}</ul>
-                                            <a href=${recipe.recipe_source} id="rec_src">${recipe.recipe_source}</a>`);
-
-        console.log("Hello 5")
-
-
-});
-
-}

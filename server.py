@@ -2,6 +2,7 @@
 
 from flask import (Flask, jsonify, render_template, request, flash, session, redirect, url_for)
 from model import connect_to_db, Folder, User, Recipe
+from passlib.hash import argon2
 import crud
 import scraper
 from jinja2 import StrictUndefined
@@ -33,7 +34,9 @@ def signup():
     elif request.method == "POST":
 
         email = request.form.get("email")
-        password = request.form.get("password")
+        pw = request.form.get("password")
+        password = argon2.hash(pw)
+        del pw
         fname = request.form.get("fname")
         lname = request.form.get("lname")
 
@@ -69,16 +72,15 @@ def login():
             flash("Username not found")
             return redirect(request.url)
         else:
-            if password != user_info.password:
+            if not argon2.verify(password, user_info.password):
                 flash("Incorrect password")
                 return redirect(request.url)
             else:
                 session['userid'] = user_info.user_id
-                flash(f'Logged in as {user_info.email}!')
+                flash(f'Successfully logged in as "{user_info.fname} {user_info.lname}" ')
                 print("SESSION USERNAME SET")
                 return redirect('/myfolders')
     
-
 
 @app.route('/logout', methods = ["GET"])
 def logout():

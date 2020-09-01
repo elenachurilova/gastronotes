@@ -24,7 +24,7 @@ class User(db.Model):
                         autoincrement=True,
                         primary_key=True)
     email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(50))
+    password = db.Column(db.String)
     fname = db.Column(db.String(20))
     lname = db.Column(db.String(20))
 

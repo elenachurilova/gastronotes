@@ -4,6 +4,7 @@ import os
 import json
 from random import choice, randint
 from datetime import datetime
+from passlib.hash import argon2
 
 import crud
 import model
@@ -31,7 +32,7 @@ with open('data/folders_data.json') as f:
 for user in range(5):
 
     email = f'test_user{user}@test.com'
-    password = '12345678'
+    password = argon2.hash('12345678')
     fname = choice(fnames)
     lname = choice(lnames)
 
