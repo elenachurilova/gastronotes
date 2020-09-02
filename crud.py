@@ -49,6 +49,7 @@ def show_user_folders(user_id):
     current_user = User.query.get(user_id)
     user_folders = current_user.folders
 
+
     return user_folders
 
 def show_recipe_by_folder(folder_id):
@@ -110,43 +111,18 @@ def delete_folder_and_contents(folder_id):
 
     db.session.commit()
 
-    print(f"This is CRUD - FOLDER WITH ID {folder_id} WAS DELETED")
-
 def delete_recipe(recipe_id):
 
     recipe = Recipe.query.get(recipe_id)
     db.session.delete(recipe)
     db.session.commit()
-    print(f"This is CRUD - recipe with id {recipe_id} was deleted")
 
 def search_for_recipe(user_id, data):
-    
-    print(f"THIS IS CRUD -- SEARCH STRING IS *************** {data}")
-    
+
     return db.session.query(Recipe).join(Folder).join(User).filter( (User.user_id == user_id) & ( (Recipe.recipe_title.like("%" +data+ "%")) | (Recipe.recipe_ingred.like("%" +data+ "%")) | (Recipe.recipe_direct.like("%" +data+ "%")))).all()
 
-    # return Recipe.query.filter((Recipe.recipe_title.like("%" +data+ "%")) | (Recipe.recipe_ingred.like("%" +data+ "%")) | (Recipe.recipe_direct.like("%" +data+ "%"))).all()
 
 
-# def create_tag(user, tag_name):
-#     """Create and return a new tag"""
-
-#     tag = Tag(user=user, tag_name=tag_name)
-
-#     db.session.add(tag)
-#     db.session.commit()
-
-#     return tag
-
-# def create_recipe_tag(tag, recipe):
-#     """Create and return a new recipe tag"""
-
-#     recipe_tag = RecipeTag(tag=tag, recipe=recipe)
-
-#     db.session.add(recipe_tag)
-#     db.session.commit()
-
-#     return recipe_tag
 
 
 if __name__ == '__main__':

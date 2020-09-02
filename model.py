@@ -74,40 +74,35 @@ class Recipe(db.Model):
         return f'<Recipe recipe_id={self.recipe_id}, title={self.recipe_title}>'
 
 
-# class Tag(db.Model):
+def example_data():
+    """Create some sample data."""
 
-#     __tablename__ = "tags"
+    # In case we will run this more than once, empty out existing data
+    Recipe.query.delete()
+    Folder.query.delete()
+    User.query.delete()
+    
+    #Add sample users, their folders and recipes
+    test_user1 = User(email='testemail@email.test', password='12345678', fname='Jane', lname='Doe')
+    test_user2 = User(email='testemail2@email.test', password='12345678', fname='John', lname='Doe')
 
-#     tag_id = db.Column(db.Integer,
-#                           autoincrement=True,
-#                           primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-#     tag_name = db.Column(db.String)
-
-#     user = db.relationship('User')
-#     recipe_tags = db.relationship('Recipe', 
-#                                    secondary='recipe_tags')
-
-#     def __repr__(self):
-#         return f'<Tag recipe_id={self.tag_id}, tag_name={self.tag_name}>'
+    
+    test_folder1 = Folder(user_id=1, folder_title='Entrees')
+    test_folder2 = Folder(user_id=1, folder_title='Drinks')
+    test_folder3 = Folder(user_id=1, folder_title='Appetizers')
+    test_folder4 = Folder(user_id=2, folder_title='Quick dinners')
+    test_folder5 = Folder(user_id=2, folder_title='Game night')
+    test_folder6 = Folder(user_id=2, folder_title='Breakfasts')
 
 
-# class RecipeTag(db.Model):
+    test_recipe1 = Recipe(folder_id=1, recipe_title='Fried Bananas', recipe_ingred='bananas, sugar', recipe_direct='slice banans', recipe_src='http://google.com', picture_url='/static/bananas.png')
+    test_recipe2 = Recipe(folder_id=1, recipe_title='Marinated Apples', recipe_ingred='apples, sugar', recipe_direct='slice apples', recipe_src='http://google.com', picture_url='/static/apples.png')
+    test_recipe3 = Recipe(folder_id=4, recipe_title='Marinated Cucumbers', recipe_ingred='cucumbers, salt', recipe_direct='slice cucumbers', recipe_src='http://google.com', picture_url='/static/cucumbers.png')
+    test_recipe4 = Recipe(folder_id=4, recipe_title='Marinated Beets', recipe_ingred='beets, salt', recipe_direct='slice beets', recipe_src='http://google.com', picture_url='/static/beets.png')
 
-#     __tablename__ = "recipe_tags"
-
-#     recipe_tag_id = db.Column(db.Integer,
-#                           autoincrement=True,
-#                           primary_key=True)
-#     tag_id = db.Column(db.Integer, db.ForeignKey('tags.tag_id'))
-#     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'))
-
-#     tag = db.relationship('Tag')
-#     recipe = db.relationship('Recipe')
-
-#     def __repr__(self):
-#         return f'<RecipeTag tag_id={self.tag_id} recipe_id={self.recipe_id}>'
-
+    db.session.add_all([test_user1, test_user2, test_folder1, test_folder2, test_folder3, test_folder4, test_folder5, test_folder6, test_recipe1, test_recipe2, test_recipe3, test_recipe4])
+    db.session.commit()
+    
 
 if __name__ == '__main__':
     from server import app
@@ -117,22 +112,6 @@ if __name__ == '__main__':
     # query it executes.
 
     connect_to_db(app)
-
-
-# test_user = User(email='testemail@email.test', password='12345678', fname='Jane', lname='Doe')
-# test_user2 = User(email='testemail2@email.test', password='12345678', fname='John', lname='Doe')
-# test_folder = Folder(user_id=1, folder_title='Entrees')
-# test_recipe = Recipe(folder_id=1, recipe_title='fried bananas', recipe_ingred='bananas, sugar', recipe_direct='slice banans', recipe_src='self', picture_url='/static/bananas.png') 
-# test_tag = Tag(user_id=1, tag_name='vegetarian')
-# test_recipe_tag = RecipeTag(tag_id=1, recipe_id=1)
-
-
-# db.session.add(test_user)
-# db.session.add(test_folder)
-# db.session.add(test_recipe)
-# db.session.add(test_tag)
-# db.session.add(test_recipe_tag)
-# db.session.commit()
 
 
 
