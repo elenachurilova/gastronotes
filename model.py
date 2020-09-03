@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import update
+from passlib.hash import argon2
 
 db = SQLAlchemy()
 
@@ -83,8 +84,8 @@ def example_data():
     User.query.delete()
     
     #Add sample users, their folders and recipes
-    test_user1 = User(email='testemail@email.test', password='12345678', fname='Jane', lname='Doe')
-    test_user2 = User(email='testemail2@email.test', password='12345678', fname='John', lname='Doe')
+    test_user1 = User(email='testemail@email.test', password=argon2.hash('12345678'), fname='Jane', lname='Doe')
+    test_user2 = User(email='testemail2@email.test', password=argon2.hash('12345678'), fname='John', lname='Doe')
 
     
     test_folder1 = Folder(user_id=1, folder_title='Entrees')

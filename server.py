@@ -103,6 +103,10 @@ def show_user_folders():
 
         return render_template('myrecipes.html', folders=folders)
 
+    else:
+
+        return redirect('/') 
+
 
 @app.route('/api/myfolders/myrecipes/<int:folder_id>.json')
 def show_folder_recipes(folder_id):

@@ -119,11 +119,10 @@ class TestCrudFunctions(TestCase):
         self.assertEqual(recipes[0].recipe_ingred, 'apples, sugar')
         self.assertEqual(recipes[0].recipe_id, 2)
 
+# SQL query for quering in psql -- select folders.folder_id, folders.user_id, users.fname, users.lname, folders.folder_title, recipes.recipe_title FROM folders JOIN users on folders.user_id = users.user_id JOIN recipes ON folders.folder_id = recipes.folder_id ORDER BY users.user_id;
 
 
-# select folders.folder_id, folders.user_id, users.fname, users.lname, folders.folder_title, recipes.recipe_title FROM folders JOIN users on folders.user_id = users.user_id JOIN recipes ON folders.folder_id = recipes.folder_id ORDER BY users.user_id;
-
-class TestServerFunctions(TestCase):
+class ServerTestBasic(TestCase):
     """Test server functions"""
 
     def setUp(self):
@@ -141,4 +140,145 @@ class TestServerFunctions(TestCase):
         db.session.close()
         db.drop_all()
 
-    
+    def test_homepage(self):
+        """Test homepage page"""
+
+        result = self.client.get("/")
+        self.assertIn(b"Your favorite recipes. Organized.", result.data)
+
+
+class ServerTestLogInSignUp(TestCase):
+    """Test log in and sign up pages"""
+
+    def setUp(self):
+        """Run before every test"""
+
+        self.client = app.test_client()
+        app.config['TESTING'] = True
+        connect_to_db(app, "postgresql:///testdb")
+        db.create_all()
+
+    def tearDown(self):
+        """Do at end of every test."""
+
+        db.session.close()
+        db.drop_all()
+
+    def test_login(self):
+        """Test login page"""
+
+        example_data()
+
+        result = self.client.post("/login",
+                        data={"email": "testemail@email.test", "password": "12345678"},
+                        follow_redirects=True)
+        self.assertIn(b"Successfully logged in as", result.data)
+
+        result2 = self.client.post("/login",
+                        data={"email": "testemail@email.test", "password": "87654321"},
+                        follow_redirects=True)
+        self.assertIn(b"Incorrect password", result2.data)
+
+    def test_signup(self):
+        """Test signup page"""
+
+        result = self.client.post("/signup",
+                                data={"email": "unittest_1@unittest.test", "password": "87654321", "fname" : "Anthony", "lname" :"Kiedis"},
+                                follow_redirects=True)
+        self.assertIn(b"Account created! Yay!", result.data)
+
+        result2 = self.client.post("/signup",
+                                data={"email": "unittest_1@unittest.test", "password": "87654321", "fname" : "Anthony", "lname" :"Kiedis"},
+                                follow_redirects=True)
+        self.assertIn(b"Account with this email already exists!", result2.data)
+
+
+class ServerTestsLoggedIn(TestCase):
+    """Server tests with user logged in to session."""
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        app.config['TESTING'] = True
+        app.config['SECRET_KEY'] = 'key'
+        self.client = app.test_client()
+
+        connect_to_db(app, "postgresql:///testdb")
+        db.create_all()
+        example_data()
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['userid'] = 1
+
+    def tearDown(self):
+        """Do at end of every test."""
+
+        db.session.close()
+        db.drop_all()
+
+    def test_myrecipes_page(self):
+        """Test page with user's recipes"""
+
+        result = self.client.get("/myfolders")
+        self.assertIn(b"NEW FOLDER", result.data)
+        self.assertNotIn(b"Your favorite recipes. Organized.", result.data)
+
+class ServerTestsLoggedOut(TestCase):
+    """Server tests with user logged in to session."""
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+    def test_myfolders_page(self):
+        """Test that user can't see important page when logged out."""
+
+        result = self.client.get("/myfolders", follow_redirects=True)
+        self.assertNotIn(b"NEW FOLDER", result.data)
+        self.assertIn(b"Collect and save your favorite recipes,", result.data)
+
+class ServerTestsLogInLogOut(TestCase):  # Bonus example. Not in lecture.
+    """Test log in and log out."""
+
+    def setUp(self):
+        """Before every test"""
+
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+        connect_to_db(app, "postgresql:///testdb")
+        db.create_all()
+        example_data()
+
+    def tearDown(self):
+        """Do at end of every test."""
+
+        db.session.close()
+        db.drop_all()
+
+    def test_login(self):
+        """Test log in form."""
+
+        with self.client as c:
+            result = c.post('/login',
+                            data={"email": "testemail@email.test", "password": "12345678"},
+                            follow_redirects=True
+                            )
+            self.assertEqual(session['userid'], 1)
+            self.assertIn(b"NEW FOLDER", result.data)
+            self.assertIn(b"Successfully logged in as", result.data)
+
+    def test_logout(self):
+        """Test logout route."""
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['userid'] = 1
+
+            result = self.client.get('/logout', follow_redirects=True)
+
+            self.assertNotIn(b'userid', session)
+            self.assertIn(b'Your favorite recipes. Organized', result.data)
