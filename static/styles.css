@@ -1,0 +1,64 @@
+/* custome styles for Gastonotes app */
+
+.main-body {
+    font-family: 'Roboto Slab', serif;
+
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Viga', cursive;
+}
+
+.container-fluid{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.row {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.navbar button  {
+    background-color: #FCC931;
+    border-radius: 10px;
+    border-color: #FCC931;
+    text-align: center;
+    color: #41483C;
+    font-family: 'Roboto Slab', serif;
+}
+
+.navbar button:hover {
+    background-color: #41483C;
+    border-color: #41483C;
+
+}
+/* font-family: 'Luckiest Guy', cursive;
+font-family: 'Roboto Slab', serif; */
+
+.navbar a {
+    color: #41483C;
+    font-family: 'Roboto Slab', serif;
+}
+
+.navbar a:hover {
+    color: #EEEEEE;
+}
+
+#search_bar {
+    padding-right: 30px;
+    padding-left: 15px;
+    font-family: 'Roboto Slab', serif;
+}
+
+.folder_title:hover {
+    color: #FCC931; 
+}
+
+#whole_recipe a {
+    color: #FCC931;
+}
+
+body > div.container-fluid > div.row.main-body > div:nth-child(2) {
+    padding-top: 15px;
+}

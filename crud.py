@@ -119,10 +119,7 @@ def delete_recipe(recipe_id):
 
 def search_for_recipe(user_id, data):
 
-    return db.session.query(Recipe).join(Folder).join(User).filter( (User.user_id == user_id) & ( (Recipe.recipe_title.like("%" +data+ "%")) | (Recipe.recipe_ingred.like("%" +data+ "%")) | (Recipe.recipe_direct.like("%" +data+ "%")))).all()
-
-
-
+    return db.session.query(Recipe).join(Folder).join(User).filter( (User.user_id == user_id) & ( (Recipe.recipe_title.ilike("%" +data+ "%")) | (Recipe.recipe_ingred.ilike("%" +data+ "%")) | (Recipe.recipe_direct.ilike("%" +data+ "%")))).all()
 
 
 if __name__ == '__main__':

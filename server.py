@@ -1,6 +1,6 @@
 """Server for Gastronotes app."""
 
-from flask import (Flask, jsonify, render_template, request, flash, session, redirect, url_for)
+from flask import Flask, jsonify, render_template, request, flash, session, redirect, url_for, g
 from model import connect_to_db, Folder, User, Recipe
 from passlib.hash import argon2
 import crud
@@ -11,6 +11,11 @@ app = Flask(__name__)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 
+JS_TESTING_MODE = False
+
+@app.before_request
+def add_tests():
+    g.jasmine_tests = JS_TESTING_MODE
 
 @app.route('/')
 def homepage():
@@ -250,8 +255,6 @@ def search_for_recipe():
     search_string = request.args.get('data')
     current_user_id = session['userid']
 
-    print(f'THIS SERVER. SEARCH STRING IS *************** {search_string}')
-
     search = crud.search_for_recipe(current_user_id, search_string)
 
     search_results = []
@@ -274,5 +277,12 @@ def search_for_recipe():
 
 if __name__ == '__main__':
     connect_to_db(app)
+
+    #need to activate Jasmine's test block
+    import sys
+    if sys.argv[-1] == "jstest":
+        JS_TESTING_MODE = True
+
     app.run(host='0.0.0.0', debug=True)
+    
 

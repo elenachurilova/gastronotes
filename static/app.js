@@ -1,9 +1,11 @@
+// JS for Gastronotes app
+
+
 "use strict";
 
 // < ---------------- FUNCTIONS ---------------- > 
 
 $( dragAndDropInit );
-// $ ( wysIwyg );
 
 //create a form to edit an existing recipe
 function create_form() {
@@ -80,6 +82,10 @@ function show_recipe(recipe) {
 
         $("#whole_recipe_edit").empty()
         $("#whole_recipe").empty()
+
+        $("#scraped_recipe_field").empty()
+        $("#new_recipe_field").empty();
+        $("#search_results").empty();
 
         $("#whole_recipe").append(`<h1 id="recipetitle">${recipe.recipe_title}</h1>
                                     <img id="recipeimage" width="400" height="300" src="${recipe.picture_url}"></img>
@@ -162,7 +168,7 @@ function submit_new_folder(evt) {
     $.post('/api/myfolders/add_folder.json', formInputs, (res) => {
         $("#folder_directory").append(
             `<div id="folder${res.folder_id}">
-                <h1 class="makeMeDroppable folder_title" id="${res.folder_id}" value="${res.folder_title}"> ${res.folder_title} </h1>
+                <h2 class="makeMeDroppable folder_title" id="${res.folder_id}" value="${res.folder_title}"> ${res.folder_title} </h2>
                 <button class="delete_folder" value="${res.folder_id}"> Delete </button>
             </div>`
         )
@@ -175,7 +181,12 @@ function submit_new_folder(evt) {
 //render html for new recipe addition 
 function create_edition_form() {
 
+    $("#whole_recipe").empty();
+    $("#whole_recipe_edit").empty();  
     $("#new_recipe_field").empty();
+    $("#scraped_recipe_field").empty()
+    $("#search_results").empty();
+
     $("#new_recipe_field").toggle()
 
     $("#new_recipe_field").append(`
@@ -204,11 +215,14 @@ function create_edition_form() {
 
     wysIwyg();
 
+    $("#recipe_addition_submit").on("click", submit_new_recipe)
+
 }
 
 
 //submit new recipe to db
 function submit_new_recipe(evt) {
+
     evt.preventDefault();
 
     let folder_idd = $("#folder_options").val()
@@ -294,6 +308,12 @@ function show_new_recipe(folder_id) {
 function create_scraping_form() {
 
     $("#scraped_recipe_field").empty()
+
+    $("#whole_recipe").empty();
+    $("#whole_recipe_edit").empty();
+    $("#new_recipe_field").empty();
+    $("#search_results").empty();
+
     $("#scraped_recipe_field").toggle()
 
     $("#scraped_recipe_field").append(`
@@ -379,7 +399,6 @@ function search_for_recipe() {
         "data" : $("#search_input").val()
     }
 
-    console.log(userInput)
 
     $.get('/api/search.json', userInput, (res) => {
     
@@ -407,9 +426,11 @@ function show_searched_recipe(recipe) {
     //clicking on recipe's name, show recipe
     li.find(".show_search_result").on("click", (evt) => {
 
+
         evt.preventDefault();
 
         $("#searched_recipe_body").empty()
+
 
         $("#searched_recipe_body").append(`<h1 id="rec_title">${recipe.recipe_title}</h1>
                                             <img id="rec_image" width="400" height="300" src="${recipe.picture_url}"></img>
@@ -449,13 +470,22 @@ $(".folder_title").on("click", (evt) => {
 
     evt.preventDefault(); 
 
+    $(".folder_title").css('color', 'black')
+
     //emptying all previous outputs - folders, recipes, textareas 
     $("#recipes").empty()
+    $("#search_list").empty()
     $("#whole_recipe").empty()
     $("#whole_recipe_edit").empty()
+    $("#searched_recipe_body").empty()
+
+    $("#new_recipe_field").empty()
+    $("#scraped_recipe_field").empty()
 
 
     let folder_id = evt.target.id
+
+    $(event.target).css('color', '#FCC931')
     
     $.get(`/api/myfolders/myrecipes/${folder_id}.json`, (data) => {
 
@@ -503,7 +533,7 @@ $("#recipe_from_url_button").on("click", create_scraping_form);
 $(".delete_folder").on("click", delete_folder)
 
 // event: submitting a new (manually entered) recipe...
-$("#recipe_addition_submit").on("click", submit_new_recipe)
+// $("#recipe_addition_submit").on("click", submit_new_recipe)
 
 //event: clicking on search submit button
 $("#search_button").on("click", search_for_recipe);

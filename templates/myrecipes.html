@@ -3,59 +3,121 @@
 
 {% block body %}
 
-    <div>
-
-        <!-- search bar and button -->
-        <div id="search_bar">
-            <input id="search_input" type="text" placeholder="Search by keyword"></input>
-            <button id="search_button" value="search_button">Submit</button>
-        </div>
-
-        <!-- a form to create new folder -->
-        <div><button id="new_folder_button">NEW FOLDER</button></div>
-        <div id="new_folder_field" hidden=True></div>
-
-        <!-- a form to create new recipe -->
-        <div><button id="new_recipe_button">NEW RECIPE</button></div>
-        <div id="new_recipe_field" style="display: none"></div>
-
-        <!-- a form to paste a URL for web scraping -->
-        <div><button id="recipe_from_url_button">RECIPE FROM URL</button></div>
-        <div id="scraped_recipe_field" style="display: none"></div>
+    <div class="container-fluid">
 
 
-        <!-- folder titles / category selectors -->
-        <div id="folder_directory">
-        {% for folder in folders%}
-            <div id="folder{{folder.folder_id}}">
-                <h1 class="makeMeDroppable folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}"> {{ folder.folder_title }}</h1>
-                <button class="delete_folder" value="{{folder.folder_id}}"> Delete </button>
+        <!-- Navigation bar -->
+        <div class="navbar navbar-expand-lg" style="background-color: #CCD8C7">
+            <a class="navbar-brand" href="/">Gastronotes</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav mr-auto">
+
+                    <li class="nav-item" id="new_folder_button"> 
+                        <a class="nav-link" href="#">New folder</a> 
+                    </li>
+                    <li class="nav-item" id="new_recipe_button">
+                        <a class="nav-link" href="#">Recipe by hand</a>
+                    </li>
+                    <li class="nav-item" id="recipe_from_url_button">
+                        <a class="nav-link" href="#">Recipe by link</a>
+                    </li>
+
+                </ul>
+
+                <form class="form-inline my-2 my-lg-0" id="search_bar">
+                    <input class="form-control mr-sm-2" id="search_input" type="search" placeholder="Search by keyword" aria-label="Search"></input>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="search_button" value="search_button">Submit</button>
+                </form>
+                
             </div>
-        {% endfor %}
+            
+            <div>
+                <!-- logout button -->
+                <button id="logout" name="logout" type="button" class="btn btn-secondary"><a href="/logout">Log Out</a></button>
+            </div>
+            
         </div>
 
-        <!-- a list of recipes -->
-        <ul id="recipes"></ul>
+        <div class="row main-body">
 
-        <!-- recipe body -->
-        <div id="whole_recipe"></div>
+            <div class="col-3">
 
-        <!-- recipe edit body -->
-        <div id="whole_recipe_edit"></div>
-        <div id="new_recipe_add"></div>
+                <!-- alert message that dissapears -->
+                <div>
+                    <p id="msg"></p>
+                </div>
+                
 
-        <!-- alert message that dissapears -->
-        <h4 id="msg"></h4>
+                <!-- a form to create new folder -->
+                <!-- <div><button id="new_folder_button">NEW FOLDER</button></div> -->
+                <div id="new_folder_field" hidden=True></div>
 
-        <!-- search results -->
-        <div id="search_results">
-            <ul id="search_list"></ul>
-            <div id="searched_recipe_body"></div>
+                <!-- a form to create new recipe -->
+                <!-- <div><button id="new_recipe_button">NEW RECIPE</button></div> -->
+                <!-- <div id="new_recipe_field" style="display: none"></div> -->
+
+                <!-- a form to paste a URL for web scraping -->
+                <!-- <div><button id="recipe_from_url_button">RECIPE FROM URL</button></div> -->
+                <!-- <div id="scraped_recipe_field" style="display: none"></div> -->
+
+
+                <!-- folder titles / category selectors -->
+                <div id="folder_directory">
+                <h1>My folders:</h1>
+                {% for folder in folders%}
+                    <div id="folder{{folder.folder_id}}">
+                        <h2 class="makeMeDroppable folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}"> {{ folder.folder_title }}</h2>
+                        <button class="delete_folder btn btn-secondary btn-sm" value="{{folder.folder_id}}"> Delete </button>
+                    </div>
+                {% endfor %}
+                </div>
+
+                <!-- search bar and button -->
+                <!-- <div id="search_bar">
+                    <input id="search_input" type="text" placeholder="Search by keyword"></input>
+                    <button id="search_button" value="search_button">Submit</button>
+                </div> -->
+
+            </div>
+            
+            <div class="col-3">
+                 <!-- a list of recipes -->
+                <ul id="recipes"></ul>
+
+                <ul id="search_list"></ul>
+
+            </div>
+
+
+            <div class="col-6">
+
+                <!-- recipe body -->
+                <div id="whole_recipe"></div>
+
+                <!-- recipe edit body -->
+                <div id="whole_recipe_edit"></div>
+                <div id="new_recipe_add"></div>
+
+                <!-- a form to create new recipe -->
+                <div id="new_recipe_field" style="display: none"></div>
+
+                <!-- a form to paste a URL for web scraping -->
+                <div id="scraped_recipe_field" style="display: none"></div>
+
+                <!-- search results -->
+                <div id="search_results">
+                    <div id="searched_recipe_body"></div>
+                </div>
+                
+            </div>
+
         </div>
-    
-        <!-- logout button -->
-        <button id="logout" name="logout" type="button"><a href="/logout">Log Out</a></button>
-
 
     </div>
 

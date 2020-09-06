@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import update
+from sqlalchemy import update, func
 from passlib.hash import argon2
 
 db = SQLAlchemy()
