@@ -3,160 +3,222 @@
 
 {% block body %}
 
-	<div class="navbar navbar-expand-lg" style="background-color: #CCD8C7">
-		<a class="navbar-brand" href="/">Gastronotes</a>
-
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-			<ul class="navbar-nav mr-auto bd-highlight">
-				<li class="nav-item" id="signup" name="signup"> 
-				<a class="nav-link" href="/signup">Sign Up</a> 
-				</li>
-
-				<li class="nav-item" id="login" name="login"> 
-				<a class="nav-link" href="/login">Log In</a> 
-				</li> 
-			</ul>
-
-		</div>
-
-	</div>
-
+	<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
 	<div class="container">
-
-		<div class="row">
-
-			
-			<div class="col-6">
-					<h1>Gastronotes</h1>
-					<h2>Your favorite recipes.<br>At your fingertips.</h2>
-
-					<a href="/signup" class="btn btn-primary btn-lg active" role="button">Sign Up</a>
-					
-			</div>
-
-			<div class="col-6">
-				<img src="/static/images/gummy-macbook.png" width="300 px" height="300 px" />
-			</div>
-
+		<a class="navbar-brand" href="/">Gastronotes</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+			<a class="nav-link" href="/signup">Sign Up</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link" href="/login">Log In</a>
+			</li>
+		</ul>
 		</div>
-
-		<div class="row">
-			<div class="col-8">
-				<h3>Your personal e-recipe book.<br> Your recipes, your family recipes, your favorites from the internet -- 
-					all in one place. </h3>
-			</div>
-
-			<div class="col-4">
-			  
-			</div>
-		</div>
-
-
-		<div class="row">
-			<div class="col-4">
-				
-			</div>
-
-			<div class="col-8">
-				<h3>No searching the web. <br> 
-				No waiting for a page to load. <br>
-				No scrolling. <br>
-				No ads. <br>
-				No unwanted recipes.</h3>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-12">
-				<h1>With Gastronotes you can</h1>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-4">
-				
-			</div>
-
-			<div class="col-8">
-				<h3>Paste a link your favorite online recipe. <br> Gastonotes will import and autoformat the recipe for you</h3>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-8">
-				<h3>Enter your own, personal recipes</h3>
-			</div>
-
-			<div class="col-4">
-				
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-4">
-				
-			</div>
-
-			<div class="col-8">
-				<h3>Quickly search for a recipe by title or ingredient</h3>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-8">
-				<h3>Customize your recipe format and add pictures</h3>
-			</div>
-
-			<div class="col-4">
-				
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-4">
-				
-			</div>
-
-			<div class="col-8">
-				<h3>Edit or delete a recipe anytime</h3>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-12">
-				<h1>How it works</h1>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-3">
-				<img src="" alt="">
-				<h4>Sign up</h4>
-			</div>
-
-			<div class="col-3">
-				<img src="" alt="">
-				<h4>Create a folder</h4>
-			</div>
-
-			<div class="col-3">
-				<img src="" alt="">
-				<h4>Add recipes</h4>
-			</div>
-
-			<div class="col-3">
-				<img src="" alt="">
-				<h4>Start cooking</h4>
-			</div>
-		</div>
-
-
 	</div>
+	</nav>
+
+
+	<!-- Main landing part-->
+	<header class="masthead text-center text-white">
+	<div class="masthead-content">
+		<div class="container">
+		<h1 class="display-1 masthead-heading mb-0">Gastronotes</h1>
+		<h2 class="masthead-subheading mb-0">Your personal e-recipe book. <br> At your fingertips.</h2>
+		<a href="/signup" class="btn btn-primary btn-xl rounded-pill mt-5">Sign Up</a>
+		</div>
+	</div>
+
+	<!-- Rendering gradient cirles on background -->
+	<div class="bg-circle-1 bg-circle"></div>
+	<div class="bg-circle-2 bg-circle"></div>
+	<div class="bg-circle-3 bg-circle"></div>
+	<div class="bg-circle-4 bg-circle"></div>
+	</header>
+
+
+	<section class="one">
+		<div class="container">
+			<div class="row cards py-5">
+				<div class="col-lg-3">
+					<div class="card-title">
+						<h3 class="text-center py-4">No searching the web</h3>
+					</div>
+				</div>
+
+				<div class="col-lg-3">
+					<div class="card-title">
+						<h3 class="text-center py-4">No waiting for a page to load</h3>
+					</div>
+				</div>
+
+				<div class="col-lg-3">
+					<div class="card-title">
+						<h3 class="text-center py-4">No ads. <br> No scrolling</h3>
+					</div>
+				</div>
+
+				<div class="col-lg-3">
+					<div class="card-title">
+						<h3 class="text-center py-4">No unwanted recipes</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<!-- Features -->
+	<section>
+	<div class="container">
+		<div class="row align-items-center">
+		<div class="col-lg-6 order-lg-2">
+			<div class="p-5">
+			<img class="img-fluid rounded-circle" src="/static/images/001.jpg" alt="">
+			</div>
+		</div>
+		<div class="col-lg-6 order-lg-1">
+			<div class="p-5">
+			<h3 class="display-4">Import a recipe</h3>
+			<p>Paste a link to your favorite online recipe and Gastronotes will import the recipe and autoformat it for you</p>
+			</div>
+		</div>
+		</div>
+	</div>
+	</section>
+
+
+	<section class="one">
+	<div class="container">
+		<div class="row align-items-center">
+		<div class="col-lg-6">
+			<div class="p-5">
+			<img class="img-fluid rounded-circle" src="/static/images/002.jpg" alt="">
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="p-5">
+			<h3 class="display-4">Add your own</h3>
+			<p>Enter your personal recipes or your family secret recipes (shhh!) and keep them all in one place</p>
+			</div>
+		</div>
+		</div>
+	</div>
+	</section>
+
+	<section>
+	<div class="container">
+		<div class="row align-items-center">
+		<div class="col-lg-6 order-lg-2">
+			<div class="p-5">
+			<img class="img-fluid rounded-circle" src="/static/images/004.jpg" alt="">
+			</div>
+		</div>
+		<div class="col-lg-6 order-lg-1">
+			<div class="p-5">
+			<h3 class="display-4">Find it</h3>
+			<p>Quickly search your recipes by title or ingredient</p>
+			</div>
+		</div>
+		</div>
+	</div>
+	</section>
+
+	<section class="one">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-6">
+					<div class="p-5">
+						<img class="img-fluid rounded-circle" src="/static/images/003.jpg" alt="">
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="p-5">
+						<h3 class="display-4">Customize it</h3>
+						<p>Add styles, set format and add images</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- How it works section -->
+	<section>
+		<div class="container pb-5">
+			<div class="row text-center">
+				<div class="col-lg-12">
+					<div>
+						<h3 class="display-4 py-5">How it works</h3>
+					</div>
+				</div>
+			</div>
+
+			<div class="row cards">
+				<div class="col-lg-3">
+					<div class="card-title">
+						<img class="mx-auto d-block" src="/static/images/icon01.png">
+						<h4 class="text-center py-4">Sign up</h4>
+					</div>
+				</div>
+
+				<div class="col-lg-3">
+					<div class="card-title">
+						<img class="mx-auto d-block" src="/static/images/icon02.png">
+						<h4 class="text-center py-4">Create a folder</h4>
+					</div>
+				</div>
+
+				<div class="col-lg-3">
+					<div class="card-title">
+						<img class="mx-auto d-block"src="/static/images/icon03.png">
+						<h4 class="text-center py-4">Add recipes</h4>
+					</div>
+				</div>
+
+				<div class="col-lg-3">
+					<div class="card-title">
+						<img class="mx-auto d-block" src="/static/images/icon04.png">
+						<h4 class="text-center py-4">Start cooking</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<section class="bold">
+		<div class="container py-5">
+			<div class="row align-items-center">
+			<div class="col-lg-6 order-lg-2">
+				<div class="text-center">
+					<a href="/signup" class="btn btn-primary btn-xl rounded-pill">Sign Up</a>
+				</div>
+			</div>
+			<div class="col-lg-6 order-lg-1">
+				<div class="p-5">
+				<h3 class="display-4">Sign up for free!</h3>
+				</div>
+			</div>
+			</div>
+		</div>
+		</section>
+
+
+
+	<footer class="masterfoot"></footer>
+
+	<footer class="py-3 bg-black">
+		<div class="container">
+		  <p class="m-0 text-center text-white small">Student Project by Elena Churilova<br> Hackbright Academy 2020 </p>
+		</div>
+		<!-- /.container -->
+	</footer>
+
 
 
 {% endblock %}
