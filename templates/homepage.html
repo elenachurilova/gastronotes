@@ -3,24 +3,160 @@
 
 {% block body %}
 
-  <div>
+	<div class="navbar navbar-expand-lg" style="background-color: #CCD8C7">
+		<a class="navbar-brand" href="/">Gastronotes</a>
 
-    <button id="signup" name="signup" type="button"><a href="/signup">Sign Up</a></button>
-    <button id="login" name="login" type="button"><a href="/login">Log In</a></button>
-  </div>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-  <div>
-    <h1>Gastronotes</h1>
-    <h2>Your favorite recipes.<br>At your fingertips.</h2>
-    
-    <p>Collect and save your favorite recipes, all in one place. 
-       No need to look across multiple devices' bookmarks. No more scrolling through
-       pictures and ads. No more paper recipes. No more binders. Your recipes are
-       now here and ready for you.</p>
-  </div>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-  <div>
-    <!-- <img src="/static/image.png"> -->
-  </div>
+			<ul class="navbar-nav mr-auto bd-highlight">
+				<li class="nav-item" id="signup" name="signup"> 
+				<a class="nav-link" href="/signup">Sign Up</a> 
+				</li>
+
+				<li class="nav-item" id="login" name="login"> 
+				<a class="nav-link" href="/login">Log In</a> 
+				</li> 
+			</ul>
+
+		</div>
+
+	</div>
+
+	<div class="container">
+
+		<div class="row">
+
+			
+			<div class="col-6">
+					<h1>Gastronotes</h1>
+					<h2>Your favorite recipes.<br>At your fingertips.</h2>
+
+					<a href="/signup" class="btn btn-primary btn-lg active" role="button">Sign Up</a>
+					
+			</div>
+
+			<div class="col-6">
+				<img src="/static/images/gummy-macbook.png" width="300 px" height="300 px" />
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-8">
+				<h3>Your personal e-recipe book.<br> Your recipes, your family recipes, your favorites from the internet -- 
+					all in one place. </h3>
+			</div>
+
+			<div class="col-4">
+			  
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-4">
+				
+			</div>
+
+			<div class="col-8">
+				<h3>No searching the web. <br> 
+				No waiting for a page to load. <br>
+				No scrolling. <br>
+				No ads. <br>
+				No unwanted recipes.</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<h1>With Gastronotes you can</h1>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				
+			</div>
+
+			<div class="col-8">
+				<h3>Paste a link your favorite online recipe. <br> Gastonotes will import and autoformat the recipe for you</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-8">
+				<h3>Enter your own, personal recipes</h3>
+			</div>
+
+			<div class="col-4">
+				
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				
+			</div>
+
+			<div class="col-8">
+				<h3>Quickly search for a recipe by title or ingredient</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-8">
+				<h3>Customize your recipe format and add pictures</h3>
+			</div>
+
+			<div class="col-4">
+				
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				
+			</div>
+
+			<div class="col-8">
+				<h3>Edit or delete a recipe anytime</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<h1>How it works</h1>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-3">
+				<img src="" alt="">
+				<h4>Sign up</h4>
+			</div>
+
+			<div class="col-3">
+				<img src="" alt="">
+				<h4>Create a folder</h4>
+			</div>
+
+			<div class="col-3">
+				<img src="" alt="">
+				<h4>Add recipes</h4>
+			</div>
+
+			<div class="col-3">
+				<img src="" alt="">
+				<h4>Start cooking</h4>
+			</div>
+		</div>
+
+
+	</div>
+
 
 {% endblock %}

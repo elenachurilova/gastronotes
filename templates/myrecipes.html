@@ -13,7 +13,7 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
+                                    
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav mr-auto">
@@ -26,6 +26,10 @@
                     </li>
                     <li class="nav-item" id="recipe_from_url_button">
                         <a class="nav-link" href="#">Recipe by link</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="msg"></a>
                     </li>
 
                 </ul>
@@ -49,44 +53,41 @@
             <div class="col-3">
 
                 <!-- alert message that dissapears -->
-                <div>
+                <!-- <div>
                     <p id="msg"></p>
-                </div>
+                </div> -->
                 
 
                 <!-- a form to create new folder -->
-                <!-- <div><button id="new_folder_button">NEW FOLDER</button></div> -->
                 <div id="new_folder_field" hidden=True></div>
 
-                <!-- a form to create new recipe -->
-                <!-- <div><button id="new_recipe_button">NEW RECIPE</button></div> -->
-                <!-- <div id="new_recipe_field" style="display: none"></div> -->
-
-                <!-- a form to paste a URL for web scraping -->
-                <!-- <div><button id="recipe_from_url_button">RECIPE FROM URL</button></div> -->
-                <!-- <div id="scraped_recipe_field" style="display: none"></div> -->
-
-
+        
                 <!-- folder titles / category selectors -->
                 <div id="folder_directory">
-                <h1>My folders:</h1>
-                {% for folder in folders%}
-                    <div id="folder{{folder.folder_id}}">
-                        <h2 class="makeMeDroppable folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}"> {{ folder.folder_title }}</h2>
-                        <button class="delete_folder btn btn-secondary btn-sm" value="{{folder.folder_id}}"> Delete </button>
-                    </div>
-                {% endfor %}
+                    <h1>My folders:</h1>
+
+                        {% for folder in folders%}
+                            
+                            <div id="folder{{folder.folder_id}}">
+                                
+                                <h2 class="makeMeDroppable folder_title" id="{{folder.folder_id}}" value="{{folder.folder_id}}"> {{ folder.folder_title }}</h2>
+                                <span>
+                                    <button class="delete_folder btn btn-default btn-sm" value="{{folder.folder_id}}"> 
+                                        <img width="30 px" height="30 px" src="/static/images/icons8-delete-64.png"/>
+                                    </button>
+                                </span>
+                            </div>
+                        {% endfor %}
+                        
+                   
                 </div>
 
-                <!-- search bar and button -->
-                <!-- <div id="search_bar">
-                    <input id="search_input" type="text" placeholder="Search by keyword"></input>
-                    <button id="search_button" value="search_button">Submit</button>
-                </div> -->
 
             </div>
             
-            <div class="col-3">
+            <div class="col-3" id="recipes_lists">
+                <h1>My recipes:</h1>
+
                  <!-- a list of recipes -->
                 <ul id="recipes"></ul>
 
@@ -95,7 +96,7 @@
             </div>
 
 
-            <div class="col-6">
+            <div class="col-6" id="viewing_body_recipe">
 
                 <!-- recipe body -->
                 <div id="whole_recipe"></div>

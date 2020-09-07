@@ -67,7 +67,18 @@ function show_recipe(recipe) {
 
     //add li to recipes list
     
-    let li = $(`<li class="makeMeDraggable recipe_title" id=${recipe.recipe_id}><span class="show">${recipe.recipe_title}</span><span class="edit"><button> Edit </button></span><span class="delete"><button id=${recipe.recipe_id}> Delete </button></span></li>`)
+    let li = $(`
+    
+    <li class="makeMeDraggable recipe_title" id=${recipe.recipe_id}>
+        <span class="show">${recipe.recipe_title}</span>
+        <span class="edit">
+            <img width="30 px" height="30 px" src="/static/images/icons8-ball-point-pen-64.png">
+        </span>
+        
+        <span id=${recipe.recipe_id} class="delete">
+            <img width="30 px" height="30 px" src="/static/images/icons8-delete-64.png">
+        </span>
+    </li>`)
 
     $("#recipes").append(li)
 
@@ -85,7 +96,7 @@ function show_recipe(recipe) {
 
         $("#scraped_recipe_field").empty()
         $("#new_recipe_field").empty();
-        $("#search_results").empty();
+        $("#searched_recipe_body").empty();
 
         $("#whole_recipe").append(`<h1 id="recipetitle">${recipe.recipe_title}</h1>
                                     <img id="recipeimage" width="400" height="300" src="${recipe.picture_url}"></img>
@@ -185,7 +196,7 @@ function create_edition_form() {
     $("#whole_recipe_edit").empty();  
     $("#new_recipe_field").empty();
     $("#scraped_recipe_field").empty()
-    $("#search_results").empty();
+    $("#searched_recipe_body").empty();
 
     $("#new_recipe_field").toggle()
 
@@ -312,7 +323,7 @@ function create_scraping_form() {
     $("#whole_recipe").empty();
     $("#whole_recipe_edit").empty();
     $("#new_recipe_field").empty();
-    $("#search_results").empty();
+    $("#searched_recipe_body").empty();
 
     $("#scraped_recipe_field").toggle()
 
@@ -430,7 +441,12 @@ function show_searched_recipe(recipe) {
         evt.preventDefault();
 
         $("#searched_recipe_body").empty()
+        $("#whole_recipe").empty()
 
+        $("whole_recipe_edit").empty()
+        $("new_recipe_field").empty()
+        $("scraped_recipe_field").empty()
+        
 
         $("#searched_recipe_body").append(`<h1 id="rec_title">${recipe.recipe_title}</h1>
                                             <img id="rec_image" width="400" height="300" src="${recipe.picture_url}"></img>

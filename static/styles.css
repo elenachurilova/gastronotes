@@ -1,4 +1,4 @@
-/* custome styles for Gastonotes app */
+/* custom styles for Gastonotes app */
 
 .main-body {
     font-family: 'Roboto Slab', serif;
@@ -61,4 +61,52 @@ font-family: 'Roboto Slab', serif; */
 
 body > div.container-fluid > div.row.main-body > div:nth-child(2) {
     padding-top: 15px;
+}
+
+#whole_recipe ul {
+    padding-left: 0px;
+}
+
+#recipeingred ol{
+    padding-left: 20px;
+}
+
+#recipeingred ul{
+    padding-left: 20px;
+}
+
+#recipedirect ul{
+    padding-left: 20px;
+}
+
+#recipedirect ol{
+    padding-left: 20px;
+}
+
+#folder_directory h2 {
+    display: inline;
+}
+
+#folder_directory>div {
+    padding-left: 40px;
+}
+
+#recipes_lists ul {
+    list-style-type: none;
+}
+
+#viewing_body_recipe>div {
+    padding-top: 15px;
+}
+
+.recipe_title img{
+    float: right;
+}
+
+#navbarSupportedContent ul{
+    float: right;
+}
+
+.row div {
+	justify-content: center;
 }
