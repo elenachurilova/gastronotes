@@ -1,5 +1,11 @@
 /* custom styles for Gastonotes app */
 
+/* --rosso-corsa: #DC0B06ff;
+--copper-penny: #B37477ff;
+--charcoal: #3B4453ff;
+--cultured: #F2F3F5ff;
+--raisin-black: #241E20ff; */
+
 .main-body {
     font-family: 'Roboto Slab', serif;
 
@@ -20,7 +26,33 @@ h1, h2, h3 {
     padding-right: 15px;
 }
 
-.navbar button  {
+.btn-secondary {
+	background-color: #3B4453;
+	color: #F2F3F5;
+	border: 0px;
+  }
+  
+.btn-secondary:active, .btn-secondary:focus, .btn-secondary:hover {
+	background-color: #B37477 !important;
+	color: #F2F3F5;
+	border: 0px;
+  }
+  
+.btn-secondary:focus {
+	box-shadow: 0 0 0 0.2rem rgba(179, 116, 119, 0.42);
+}
+
+
+#new_folder_button a, #new_recipe_button a, #recipe_from_url_button a {
+	color: #DC0B06 !important;
+}
+
+#new_folder_button a:hover, #new_recipe_button a:hover, #recipe_from_url_button a:hover {
+	color: #F2F3F5 !important;
+}
+
+
+/* .navbar button  {
     background-color: #FCC931;
     border-radius: 10px;
     border-color: #FCC931;
@@ -33,16 +65,17 @@ h1, h2, h3 {
     background-color: #41483C;
     border-color: #41483C;
 
-}
+} */
 
-.navbar a {
-    color: #41483C;
+.navbar li {
+    color: #DC0B06;
     font-family: 'Roboto Slab', serif;
 }
 
 .navbar a:hover {
     color: #EEEEEE;
 }
+
 
 #search_bar {
     padding-right: 30px;
@@ -106,10 +139,6 @@ body > div.container-fluid > div.row.main-body > div:nth-child(2) {
     float: right;
 }
 
-/* .row div {
-	justify-content: center;
-} */
-
 
 .one {
 	background-image: url("/static/images/dot-grid.png");
@@ -151,41 +180,6 @@ header.masthead .masthead-content .masthead-subheading {
 	font-size: 2rem;
   }
   
-/* header.masthead .bg-circle {
-	z-index: 0;
-	position: absolute;
-	border-radius: 100%;
-	background: linear-gradient(0deg,  #F2F3F5  0%, #241E20 100%);
-  }
-  
-header.masthead .bg-circle-1 {
-	height: 90rem;
-	width: 90rem;
-	bottom: -55rem;
-	left: -55rem;
-  }
-  
-header.masthead .bg-circle-2 {
-	height: 50rem;
-	width: 50rem;
-	top: -25rem;
-	right: -25rem;
-  }
-  
-header.masthead .bg-circle-3 {
-	height: 20rem;
-	width: 20rem;
-	bottom: -10rem;
-	right: 5%;
-  }
-  
-header.masthead .bg-circle-4 {
-	height: 30rem;
-	width: 30rem;
-	top: -5rem;
-	right: 35%;
-  } */
-
 .btn-xl {
 	text-transform: uppercase;
 	padding: 1.5rem 3rem;
@@ -205,12 +199,16 @@ header.masthead .bg-circle-4 {
 
 .btn-primary:active, .btn-primary:focus, .btn-primary:hover {
 	background-color: #F2F3F5 !important;
-	border-color: #F2F3F5  !important;
+	border-color: #DC0B06  !important;
 	color: #DC0B06; 
 }
 
 .btn-primary:focus {
 box-shadow: 0 0 0 0.2rem rgba(238, 9, 121, 0.5);
+}
+
+.rounded-pill {
+	border-radius: 5rem;
 }
 
 .py-5 {
