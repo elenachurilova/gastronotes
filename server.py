@@ -17,6 +17,18 @@ JS_TESTING_MODE = False
 def add_tests():
     g.jasmine_tests = JS_TESTING_MODE
 
+# --------------- test ------------------
+@app.route('/example')
+def render_example():
+	
+	current_user_id = 1
+	folders = crud.show_user_folders(current_user_id)
+	
+	return render_template('example.html', folders=folders)
+
+# --------------------------------------
+
+
 @app.route('/')
 def homepage():
     """View homepage"""
