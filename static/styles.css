@@ -94,7 +94,7 @@ body > div.container-fluid > div.row.main-body > div:nth-child(2) {
     padding-left: 40px;
 }
 
-body ul {
+#sidebarMenu>ul {
 	list-style-type: none;
 }
 
@@ -212,12 +212,7 @@ footer.masterfoot {
 	background-attachment: scroll;
 	background-size: cover;
 }
-  
-/* --rosso-corsa: #DC0B06ff;
---copper-penny: #B37477ff;
---charcoal: #3B4453ff;
---cultured: #F2F3F5ff;
---raisin-black: #241E20ff; */
+
 
 .w-70 {
     width: 70%!important;
@@ -388,7 +383,7 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
   figure {
 	margin: 0; }
   
-  p {
+ .container-form p {
 	margin-bottom: 0px;
 	font-size: 15px;
 	color: #777; }
@@ -409,7 +404,7 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
   .clear {
 	clear: both; }
   
-container-form {
+.container-form {
 	font-size: 13px;
 	line-height: 1.8;
 	color: #222;

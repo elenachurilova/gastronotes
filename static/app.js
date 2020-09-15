@@ -474,13 +474,14 @@ function search_for_recipe() {
         "data" : $("#search_input").val()
     }
 
-
     $.get('/api/search.json', userInput, (res) => {
+
     
         for (let recipe of res) {
 
             show_searched_recipe(recipe)
-        }
+		}
+		
     });
 }
 
@@ -499,7 +500,7 @@ function show_searched_recipe(recipe) {
         $("#search_list").append(li)
         
     } else { 
-        $("#search_list").append(`<div> ${recipe.error} <div>`)
+        $("#search_list").append(`<div> ${recipe.error} </div>`)
         
     }
 
@@ -559,7 +560,7 @@ $("#folder_directory").on("click", ".folder_title", (evt) => {
 
 	evt.preventDefault(); 
 
-	const current = $(event.target)
+	const current = $(evt.target)
 	current.parent().parent().find('li>a.folder_title').removeClass('active')
 	current.addClass('active')
 

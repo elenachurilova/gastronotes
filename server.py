@@ -17,17 +17,6 @@ JS_TESTING_MODE = False
 def add_tests():
     g.jasmine_tests = JS_TESTING_MODE
 
-# --------------- test ------------------
-@app.route('/example')
-def render_example():
-	
-	current_user_id = 1
-	folders = crud.show_user_folders(current_user_id)
-	
-	return render_template('example.html', folders=folders)
-
-# --------------------------------------
-
 
 @app.route('/')
 def homepage():
@@ -37,7 +26,6 @@ def homepage():
         return redirect('/myfolders')
     else:
         return render_template("homepage.html")
-
 
 
 @app.route('/signup', methods=["GET","POST"])
@@ -69,7 +57,6 @@ def signup():
         return redirect('/')
 
 
-
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     """View log in form and log user in"""
@@ -94,7 +81,7 @@ def login():
                 return redirect(request.url)
             else:
                 session['userid'] = user_info.user_id
-                flash(f'Successfully logged in as "{user_info.fname} {user_info.lname}" ')
+                # flash(f'Successfully logged in as "{user_info.fname} {user_info.lname}" ')
                 print("SESSION USERNAME SET")
                 return redirect('/myfolders')
     
@@ -281,6 +268,7 @@ def search_for_recipe():
                                     "recipe_source" : recipe.recipe_src,
                                     "picture_url" : recipe.picture_url 
                                 })
+        
     else:
         search_results.append({"error" : "Nothing found"})
 
