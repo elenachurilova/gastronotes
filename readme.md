@@ -28,7 +28,7 @@ A web app to organize all your cooking recipes
 
 # 🍴 Requirements 
 
-Install PostgresQL (Mac OSX)
+Install PostgreSQL (Mac OSX)
 
 Clone or fork this repo:
 ```
