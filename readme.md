@@ -2,7 +2,7 @@
 A web app to organize all your cooking recipes
 
 # 🍴 Features
-- [x] Sing up and Log In
+- [x] Sign up and Log In
 - [x] Create a folder
 - [x] Add a recipe (type in)
 - [x] Import a recipe (web scraping)
@@ -28,6 +28,34 @@ A web app to organize all your cooking recipes
 
 # 🍴 Requirements 
 
-## Included in requirements.txt 
+Install PostgresQL (Mac OSX)
 
+Clone or fork this repo:
+```
+https://github.com/elenachurilova/gastronotes
+```
+
+Create and activate a virtual environment inside your Adventure Awaits directory:
+```
+virtualenv env
+source env/bin/activate
+```
+
+Install the dependencies:
+```
+pip install -r requirements.txt
+```
+
+Set up the database:
+
+```
+createdb recipes
+python3 model.py
+```
+
+Run the app:
+
+```
+python3 server.py
+```
 
