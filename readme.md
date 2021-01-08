@@ -35,7 +35,7 @@ Clone or fork this repo:
 https://github.com/elenachurilova/gastronotes
 ```
 
-Create and activate a virtual environment inside your Adventure Awaits directory:
+Create and activate a virtual environment inside your Gastronotes directory:
 ```
 virtualenv env
 source env/bin/activate
